@@ -1,14 +1,12 @@
-import xml.dom.NodeFilter
 from playwright.sync_api import sync_playwright
 
 
 """
 Core conversion logic for document to continuous PDF conversion.
 """
-from ast import main
 
 
-def convert(input_path, output_path = "output.pdf"):
+def convert(input_path, output_path="output.pdf"):
     """
     Convert a document to a continuous PDF. TODO: This is only for HTML files currently.
 
@@ -29,9 +27,6 @@ def convert(input_path, output_path = "output.pdf"):
         page_height = (str)(page.evaluate("document.body.scrollHeight")) + "px"
         page_width = (str)(page.evaluate("document.body.scrollWidth")) + "px"
 
-        print(page_height)
-        print(page_width)
-
         # As if a human was viewing the page it fixes some odd graphical errors.
 
         page.emulate_media(media="screen")
@@ -48,5 +43,8 @@ def convert(input_path, output_path = "output.pdf"):
 
 # TODO: ADD file:/// to aboslute path at beginning
 
+
 if __name__ == "__main__":
-    convert("C:/Users/AnthonyPC/Documents/GitHub/Document-to-ContinuousPDF/examples/207 individutal contribution.html")
+    convert(
+        "C:/Users/AnthonyPC/Documents/GitHub/Document-to-ContinuousPDF/examples/207 individutal contribution.html"
+    )
