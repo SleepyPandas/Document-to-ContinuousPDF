@@ -1,3 +1,3 @@
 """
-Test suite for doc2pdf package.
+Test suite for seamless_pdf package.
 """
