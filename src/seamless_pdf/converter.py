@@ -22,6 +22,10 @@ def convert(input_path, output_path="output.pdf"):
 
         page.goto("file:///" + input_path)
 
+        # As if a human was viewing the page it fixes some odd graphical errors.
+
+        page.emulate_media(media="screen")
+
         # now find the scrollHeight
 
         page_height = (str)(page.evaluate("document.body.scrollHeight")) + "px"
