@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "seamless_pdf"
+name = "seamless-pdf"
 version = "0.1.0"
 authors = [
   { name="Anthony Hua", email="tommyrobotics1@gmail.com" },
@@ -11,14 +11,15 @@ authors = [
 description = "A tool to convert HTML documents to continuous PDFs"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "playwright",
+    "playwright >=1.40.0",
 ]
 
 [project.scripts]
