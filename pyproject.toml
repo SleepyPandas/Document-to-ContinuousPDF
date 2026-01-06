@@ -19,5 +19,8 @@ dependencies = [
     "playwright",
 ]
 
+[project.scripts]
+seamless-pdf = "seamless_pdf.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
