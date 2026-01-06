@@ -40,11 +40,3 @@ def convert(input_path, output_path="output.pdf"):
 
         browser.close()
 
-
-# TODO: ADD file:/// to aboslute path at beginning
-
-
-if __name__ == "__main__":
-    convert(
-        "C:/Users/AnthonyPC/Documents/GitHub/Document-to-ContinuousPDF/examples/207 individutal contribution.html"
-    )
