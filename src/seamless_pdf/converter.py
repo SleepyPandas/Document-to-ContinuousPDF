@@ -31,10 +31,6 @@ def convert(input_path, output_path="output.pdf"):
         page_height = (str)(page.evaluate("document.body.scrollHeight")) + "px"
         page_width = (str)(page.evaluate("document.body.scrollWidth")) + "px"
 
-        # As if a human was viewing the page it fixes some odd graphical errors.
-
-        page.emulate_media(media="screen")
-
         page.pdf(
             path=output_path,
             width=page_width,
