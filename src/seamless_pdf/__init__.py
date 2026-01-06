@@ -1,8 +1,8 @@
 """
 Document-to-ContinuousPDF
 
-A Python package that converts Doc, PDF, Word, and HTML files
-into a long continuous PDF without page breaks.
+A Python package that converts HTML files into a long,
+continuous PDF without page breaks.
 """
 
 __version__ = "0.1.0"

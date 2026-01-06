@@ -6,13 +6,15 @@ build-backend = "setuptools.build_meta"
 name = "seamless_pdf"
 version = "0.1.0"
 authors = [
-  { name="AnthonyPC", email="anthony@example.com" },
+  { name="Anthony Hua", email="tommyrobotics1@gmail.com" },
 ]
 description = "A tool to convert HTML documents to continuous PDFs"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
