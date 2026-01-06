@@ -1,2 +1,3 @@
-import seamless_pdf
-seamless_pdf.convert("file.docx")
+# from seamless_pdf import convert 
+# convert("file.docx")
+# TODO: Add more examples "mock" usecase
