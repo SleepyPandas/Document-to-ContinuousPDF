@@ -27,3 +27,6 @@ seamless-pdf = "seamless_pdf.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.urls]
+"Changelog" = ""
