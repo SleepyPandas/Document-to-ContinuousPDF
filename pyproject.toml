@@ -8,16 +8,10 @@ version = "0.1.0"
 authors = [
   { name="Anthony Hua", email="tommyrobotics1@gmail.com" },
 ]
-description = "A tool to convert HTML documents to continuous PDFs"
+description = "Convert HTML documents into continuous, single-page PDFs."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
 dependencies = [
     "playwright >=1.40.0",
 ]
@@ -27,6 +21,3 @@ seamless-pdf = "seamless_pdf.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[project.urls]
-"Changelog" = ""
