@@ -28,7 +28,7 @@ def _to_file_url(input_path):
 @timer
 def convert(input_path, output_path="output.pdf"):
     """
-    Convert a document to a continuous PDF. TODO: This is only for HTML files currently.
+    Convert a document to a continuous PDF.
 
     Args:
         input_path (str): Path to the input document.
