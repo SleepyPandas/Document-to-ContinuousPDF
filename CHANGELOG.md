@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.1] - 2026-01-07
+## [[0.1.1]](https://github.com/SleepyPandas/Document-to-ContinuousPDF/commits/v0.1.1?since=2026-01-10&until=2026-01-11) - 2026-01-07
 
 ### Added
 - Custom `PDFConversionError` for conversion failures.
