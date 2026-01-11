@@ -213,3 +213,5 @@ examples/207 individutal contribution.html
 *.pdf
 *.png
 main.py
+test_output.txt
+.gitignore
