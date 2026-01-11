@@ -3,6 +3,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 from seamless_pdf.utils import timer
+from seamless_pdf.exceptions import PDFConversionError
 
 
 """
@@ -35,29 +36,32 @@ def convert(input_path, output_path="output.pdf"):
         output_path (str): Path to the output PDF.
     """
 
-    with sync_playwright() as playwright:
+    try:
+        with sync_playwright() as playwright:
 
-        browser = playwright.chromium.launch(headless=True)
-        page = browser.new_page()
+            browser = playwright.chromium.launch(headless=True)
+            page = browser.new_page()
 
-        file_url = _to_file_url(input_path)
+            file_url = _to_file_url(input_path)
 
-        page.goto(file_url)
+            page.goto(file_url)
 
-        # As if a human was viewing the page it fixes some odd graphical errors.
+            # As if a human was viewing the page it fixes some odd graphical errors.
 
-        page.emulate_media(media="screen")
+            page.emulate_media(media="screen")
 
-        # now find the scrollHeight
+            # now find the scrollHeight
 
-        page_height = (str)(page.evaluate("document.body.scrollHeight")) + "px"
-        page_width = (str)(page.evaluate("document.body.scrollWidth")) + "px"
+            page_height = (str)(page.evaluate("document.body.scrollHeight")) + "px"
+            page_width = (str)(page.evaluate("document.body.scrollWidth")) + "px"
 
-        page.pdf(
-            path=str(output_path),
-            width=page_width,
-            height=page_height,
-            print_background=True,
-        )
+            page.pdf(
+                path=str(output_path),
+                width=page_width,
+                height=page_height,
+                print_background=True,
+            )
 
-        browser.close()
+            browser.close()
+    except Exception as e:
+        raise PDFConversionError(f"Failed to convert {input_path}: {str(e)}") from e
