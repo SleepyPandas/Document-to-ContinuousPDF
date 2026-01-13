@@ -39,3 +39,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 [ ] Add Error / Expection handling 
 <br>
 [ ] Branch into A larger suite of tools for PDF manipulation... TBD
+<br>
+[ ] MD to PDF 
+<br> 
+[ ] HTML / PDF to Mobile Interface
+<br> 
+[ ] Convert it into a darkmode PDF
