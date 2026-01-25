@@ -57,7 +57,8 @@ from seamless_pdf.converter import convert
 
 # -------- Test Convert Function --------
 
-@patch("seamless_pdf.converter.sync_playwright")
+
+@patch("seamless_pdf.html_converter.sync_playwright")
 def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     """Test that convert launches browser and calls PDF generation (Mocked)."""
 
