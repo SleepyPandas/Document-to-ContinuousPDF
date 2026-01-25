@@ -1,5 +1,5 @@
 """
-Utility functions for document processing.
+Shared utilities for path handling, input detection, and timing.
 """
 
 
@@ -55,17 +55,24 @@ _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 _DOCX_EXTENSIONS = {".docx"}
 
+
 def timer(func):
     """
-    Decorator to measure the execution time of a function.
+    Decorator to measure and print the execution time of a function.
+
+    Args:
+        func (Callable): Function to wrap.
+
+    Returns:
+        Callable: Wrapped function that prints elapsed time.
     """
 
     def wrapper(*args, **kwargs):
-        # 1. Start timer
+        # Start high-resolution timer before invoking the function.
         start_time = time.perf_counter()
 
         result = func(*args, **kwargs)
-        # 2. End timer / Logging
+        # Compute elapsed time for simple, user-visible logging.
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         print(f"Compiled in: {elapsed_time:.5f} seconds")
