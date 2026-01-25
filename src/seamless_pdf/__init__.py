@@ -5,7 +5,7 @@ A Python package that converts HTML files into a long,
 continuous PDF without page breaks.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 from .converter import convert
 from .utils import timer
