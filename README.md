@@ -63,14 +63,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 
 ## Whats Next?
-[ ] Add support for other formats (e.g. PDF, DOCX, Word, Markdown).
-<br>
-[ ] Add Error / Expection handling 
-<br>
-[ ] Branch into A larger suite of tools for PDF manipulation... TBD
-<br>
-[ ] MD to PDF 
-<br> 
-[ ] HTML / PDF to Mobile Interface
-<br> 
-[ ] Convert it into a darkmode PDF
+- [ ] Add support for other formats (e.g. PDF, DOCX, Word, Markdown).
+- [ ] Add Error / Expection handling 
+- [ ] Branch into A larger suite of tools for PDF manipulation... TBD
+- [ ] MD to PDF 
+- [ ] HTML / PDF to Mobile Interface
+- [ ] Convert it into a darkmode PDF
