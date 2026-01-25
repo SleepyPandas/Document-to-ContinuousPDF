@@ -9,4 +9,6 @@ __version__ = "0.1.1"
 
 from .converter import convert
 from .utils import timer
-__all__ = ["convert", "timer", "__version__"]
+from .markdown_converter import convert_markdown_to_html
+
+__all__ = ["convert", "timer", "__version__", "convert_markdown_to_html"]
