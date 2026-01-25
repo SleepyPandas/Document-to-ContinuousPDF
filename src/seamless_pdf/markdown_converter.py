@@ -14,8 +14,30 @@ def convert_markdown_to_html(input_path, output_path="output.html"):
     with open(input_path, "r", encoding="utf-8") as f:
         text = f.read()
 
+    extensions = [
+        # --- Standard Built-ins ---
+        "extra",  # Tables, Footnotes, Definition Lists, Abbreviations
+        "codehilite",  # Syntax Highlighting
+        "toc",  # Auto-generates Table of Contents [TOC]
+        "admonition",  # "Note" and "Warning" callout blocks
+        "sane_lists",  # Better list behavior (standardizes mixing list types)
+        "tables",  # Tables
+        # --- PyMdown "Power User" Extensions ---
+        "pymdownx.tasklist",  # GitHub-style Checkboxes (- [x])
+        "pymdownx.arithmatex",  # Math/LaTeX support ($E=mc^2$)
+        "pymdownx.superfences",  # Allows nesting code blocks inside lists
+        "pymdownx.details",  # Collapsible "Details" blocks (requires superfences)
+        "pymdownx.magiclink",  # Auto-links URLs without needing <brackets>
+        "pymdownx.emoji",  # Emoji support (:smile:)
+        "pymdownx.tilde",  # Strikethrough (~~text~~)
+        "pymdownx.caret",  # Superscript (^text^)
+        "pymdownx.mark",  # Highlighter text (==text==)
+        "pymdownx.smartsymbols",  # Converts --> to →, =/= to ≠
+    ]
 
-    html_body = markdown.markdown(text)
+
+
+    html_body = markdown.markdown(text, extensions=extensions)
 
     final_output = f"""
     <!DOCTYPE html>
