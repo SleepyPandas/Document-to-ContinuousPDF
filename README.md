@@ -1,6 +1,5 @@
 # Seamless PDF
 
-Convert HTML documents into continuous, single-page PDFs without page breaks.
 Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs without page breaks.
 
 ## Features
@@ -14,20 +13,22 @@ Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs wit
 ## Installation
 
 ```bash
-pip install seamless_pdf
-playwright install chromium
+pip install seamless-pdf
+python -m playwright install chromium
 ```
 
 ## Quick Start
 
-**CLI:**
+CLI:
+
 ```bash
 seamless-pdf input.html -o output.pdf
 seamless-pdf README.md -o README.pdf
 seamless-pdf report.docx -o report.pdf
 ```
 
-**Python:**
+Python:
+
 ```python
 from seamless_pdf import convert
 
@@ -56,16 +57,14 @@ convert("docs/notes.md", "notes.pdf", input_type="markdown")
 - pymdown-extensions >= 10.0
 - mammoth >= 1.6.0
 
-
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
+## Roadmap
 
-## Whats Next?
-- [ ] Add support for other formats (e.g. PDF, DOCX, Word, Markdown).
-- [ ] Add Error / Expection handling 
-- [ ] Branch into A larger suite of tools for PDF manipulation... TBD
-- [ ] MD to PDF 
-- [ ] HTML / PDF to Mobile Interface
-- [ ] Convert it into a darkmode PDF
+- Add support for additional input formats (PDF, Word)
+- Improve error handling and diagnostics
+- Broaden the PDF manipulation toolset
+- HTML/PDF to mobile-friendly interface
+- Dark mode PDF output
