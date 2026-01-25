@@ -1,3 +1,4 @@
+from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.utils import css_style
 import markdown
 
@@ -35,8 +36,6 @@ def convert_markdown_to_html(input_path, output_path="output.html"):
         "pymdownx.smartsymbols",  # Converts --> to →, =/= to ≠
     ]
 
-
-
     html_body = markdown.markdown(text, extensions=extensions)
 
     final_output = f"""
@@ -66,4 +65,5 @@ def convert_markdown_to_pdf(input_path, output_path="output.pdf"):
         output_path (str): Path to the output PDF.
     """
 
-    raise NotImplementedError("Markdown conversion is not implemented yet.")
+    convert_markdown_to_html(input_path, "temp.html")
+    convert_html_to_pdf("temp.html", output_path)
