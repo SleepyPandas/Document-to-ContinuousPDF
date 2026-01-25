@@ -214,3 +214,4 @@ examples/207 individutal contribution.html
 *.png
 main.py
 test_output.txt
+*.html
