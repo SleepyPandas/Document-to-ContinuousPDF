@@ -1,12 +1,13 @@
 """
-Document-to-ContinuousPDF
+seamless_pdf package.
 
-A Python package that converts HTML files into a long,
+Provides helpers to convert HTML and Markdown files into a single,
 continuous PDF without page breaks.
 """
 
 __version__ = "0.2.0"
 
+# Re-export common entry points for convenience.
 from .converter import convert
 from .utils import timer
 from .markdown_converter import convert_markdown_to_html

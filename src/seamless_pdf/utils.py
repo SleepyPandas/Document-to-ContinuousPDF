@@ -1,5 +1,5 @@
 """
-Utility functions for document processing.
+Shared utilities for path handling, input detection, and timing.
 """
 
 
@@ -7,7 +7,7 @@ from urllib.parse import unquote, urlparse
 from pathlib import Path
 import time
 
-# THIS IS USED FOR MD HTML STYLING
+# GitHub-like CSS used when rendering Markdown to HTML.
 
 css_style = """
 <style>
@@ -54,17 +54,24 @@ css_style = """
 _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 
+
 def timer(func):
     """
-    Decorator to measure the execution time of a function.
+    Decorator to measure and print the execution time of a function.
+
+    Args:
+        func (Callable): Function to wrap.
+
+    Returns:
+        Callable: Wrapped function that prints elapsed time.
     """
 
     def wrapper(*args, **kwargs):
-        # 1. Start timer
+        # Start high-resolution timer before invoking the function.
         start_time = time.perf_counter()
 
         result = func(*args, **kwargs)
-        # 2. End timer / Logging
+        # Compute elapsed time for simple, user-visible logging.
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         print(f"Compiled in: {elapsed_time:.5f} seconds")
@@ -75,18 +82,43 @@ def timer(func):
 
 
 def path_from_input(input_path):
+    """
+    Normalize supported input types to a Path instance.
+
+    Args:
+        input_path (str | Path): File system path or file:// URL.
+
+    Returns:
+        Path: Resolved path without validating existence.
+    """
     if isinstance(input_path, Path):
+        # Already a Path object, return as-is.
         return input_path
     if isinstance(input_path, str) and input_path.startswith("file://"):
+        # Convert file:// URLs into local file system paths.
         parsed = urlparse(input_path)
         raw_path = unquote(parsed.path)
+        # On Windows, file:// URLs may include a leading slash before the drive.
         if raw_path.startswith("/") and len(raw_path) > 2 and raw_path[2] == ":":
             raw_path = raw_path[1:]
         return Path(raw_path)
+    # Fallback for raw string paths.
     return Path(input_path)
 
 
 def detect_input_type(input_path):
+    """
+    Detect input type based on file extension.
+
+    Args:
+        input_path (str | Path): Input file path or file:// URL.
+
+    Returns:
+        str: "html" or "markdown" based on extension.
+
+    Raises:
+        ValueError: If the extension is not supported.
+    """
     suffix = path_from_input(input_path).suffix.lower()
     if suffix in _HTML_EXTENSIONS:
         return "html"
@@ -98,9 +130,23 @@ def detect_input_type(input_path):
 
 
 def to_file_url(input_path):
+    """
+    Convert a local path into a file:// URL that Playwright can open.
+
+    Args:
+        input_path (str | Path): Input path or existing file:// URL.
+
+    Returns:
+        str: File URL pointing to the input file.
+
+    Raises:
+        FileNotFoundError: If the resolved path does not exist.
+    """
     if isinstance(input_path, str) and input_path.startswith("file://"):
+        # Already a file URL, return unchanged.
         return input_path
 
+    # Resolve relative paths against the current working directory.
     resolved_path = Path(input_path).expanduser()
     if not resolved_path.is_absolute():
         resolved_path = (Path.cwd() / resolved_path).resolve()
@@ -110,4 +156,5 @@ def to_file_url(input_path):
     if not resolved_path.exists():
         raise FileNotFoundError(f"Input file not found: {resolved_path}")
 
+    # Use Path.as_uri() to produce a properly encoded file:// URL.
     return resolved_path.as_uri()
