@@ -7,6 +7,49 @@ from urllib.parse import unquote, urlparse
 from pathlib import Path
 import time
 
+# THIS IS USED FOR MD HTML STYLING
+
+css_style = """
+<style>
+    body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        font-size: 16px;
+        line-height: 1.5;
+        color: #24292e;
+    }
+    
+    h1, h2, h3 { margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { padding-bottom: 0.3em; border-bottom: 1px solid #eaecef; }
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1.25em; }
+
+    /* Code Blocks */
+    pre { background-color: #f6f8fa; border-radius: 6px; padding: 16px; overflow: auto; }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 85%; background-color: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+    pre > code { background-color: transparent; padding: 0; }
+
+    /* Blockquotes */
+    blockquote { padding: 0 1em; color: #6a737d; border-left: 0.25em solid #dfe2e5; margin: 0; }
+    
+    /* Links */
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Tables (GitHub style) */
+    table { border-spacing: 0; border-collapse: collapse; display: block; width: max-content; max-width: 100%; overflow: auto; }
+    tr { border-top: 1px solid #c6cbd1; background-color: #fff; }
+    tr:nth-child(2n) { background-color: #f6f8fa; }
+    th, td { padding: 6px 13px; border: 1px solid #dfe2e5; }
+    th { font-weight: 600; }
+</style>
+"""
+
 
 _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
