@@ -55,7 +55,6 @@ _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 _DOCX_EXTENSIONS = {".docx"}
 
-
 def timer(func):
     """
     Decorator to measure the execution time of a function.
