@@ -1,3 +1,7 @@
+"""
+Tests for the command-line interface wrapper.
+"""
+
 import pytest
 from unittest.mock import patch
 import sys
@@ -6,10 +10,12 @@ from seamless_pdf.cli import main
 
 def test_cli_success(tmp_path):
     """Test the CLI with valid input and output arguments."""
+    # Create a temporary input file and output target.
     input_file = tmp_path / "input.html"
     input_file.touch()
     output_file = tmp_path / "result.pdf"
 
+    # Simulate CLI arguments: program_name input_file -o output_file
     test_args = ["program_name", str(input_file), "-o", str(output_file)]
 
     with patch.object(sys, "argv", test_args):
@@ -26,9 +32,11 @@ def test_cli_success(tmp_path):
 
 def test_cli_defaults(tmp_path):
     """Test the CLI uses default output filename when not specified."""
+    # Create a temporary input file.
     input_file = tmp_path / "input.html"
     input_file.touch()
 
+    # Only provide the input path to trigger the default output name.
     test_args = ["program_name", str(input_file)]
 
     with patch.object(sys, "argv", test_args):
@@ -45,6 +53,7 @@ def test_cli_defaults(tmp_path):
 
 def test_cli_failure(tmp_path, capsys):
     """Test that the CLI handles converter exceptions gracefully."""
+    # Create a temporary input file for the failing conversion path.
     input_file = tmp_path / "input.html"
     input_file.touch()
 

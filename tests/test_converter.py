@@ -1,12 +1,12 @@
 """
-Tests for the converter module.
+Tests for conversion utilities and the main convert facade.
 """
 
-# As a reminder pytest to run!!!!!
+# Note: run with pytest from the repository root.
 
 import pytest
 from pathlib import Path
-from seamless_pdf.converter import _to_file_url
+from seamless_pdf.utils import to_file_url
 import os
 
 
@@ -17,7 +17,7 @@ def test_to_file_url_absolute_path(tmp_path):
     f.touch()
 
     expected_uri = f.as_uri()
-    assert _to_file_url(str(f)) == expected_uri
+    assert to_file_url(str(f)) == expected_uri
 
 
 def test_to_file_url_relative_path(tmp_path):
@@ -34,7 +34,7 @@ def test_to_file_url_relative_path(tmp_path):
     try:
         relative_path = "temp_relative_test_file.html"
         expected_uri = f.as_uri()
-        assert _to_file_url(relative_path) == expected_uri
+        assert to_file_url(relative_path) == expected_uri
     finally:
         f.unlink()
 
@@ -42,13 +42,13 @@ def test_to_file_url_relative_path(tmp_path):
 def test_to_file_url_existing_uri():
     """Test that an existing file:// URI is returned as is."""
     uri = "file:///path/to/file.html"
-    assert _to_file_url(uri) == uri
+    assert to_file_url(uri) == uri
 
 
 def test_to_file_url_not_found():
     """Test that FileNotFoundError is raised for non-existent files."""
     with pytest.raises(FileNotFoundError):
-        _to_file_url("non_existent_file.html")
+        to_file_url("non_existent_file.html")
 
 
 from unittest.mock import patch, MagicMock
