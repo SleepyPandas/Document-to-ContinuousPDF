@@ -34,8 +34,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 
 ## Whats Next?
-[ ] Add support for other formats (e.g. PDF, DOCX, Word, Markdown).
+- [ ] Add support for other formats (e.g. PDF, DOCX, Word, Markdown).
 <br>
-[ ] Add Error / Expection handling 
+- [ ] Add Error / Expection handling 
 <br>
-[ ] Branch into A larger suite of tools for PDF manipulation... TBD
+- [ ] Branch into A larger suite of tools for PDF manipulation... TBD
