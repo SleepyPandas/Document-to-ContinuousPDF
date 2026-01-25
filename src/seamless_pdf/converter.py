@@ -1,8 +1,6 @@
 from seamless_pdf.markdown_converter import convert_markdown_to_pdf
 from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.utils import detect_input_type
-from pathlib import Path
-from urllib.parse import unquote, urlparse
 
 from seamless_pdf.utils import timer
 from seamless_pdf.exceptions import PDFConversionError
