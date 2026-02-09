@@ -9,6 +9,22 @@ from seamless_pdf.exceptions import PDFConversionError
 """
 Core conversion logic for document to continuous PDF conversion.
 """
+from seamless_pdf.markdown_converter import convert_markdown_to_pdf
+from seamless_pdf.html_converter import convert_html_to_pdf
+from seamless_pdf.docx_converter import convert_docx_to_pdf
+from seamless_pdf.utils import detect_input_type, timer
+from seamless_pdf.exceptions import PDFConversionError
+
+
+def _get_converter(input_type):
+    """Return the correct converter function for a detected input type."""
+    if input_type == "html":
+        return convert_html_to_pdf
+    if input_type == "markdown":
+        return convert_markdown_to_pdf
+    if input_type == "docx":
+        return convert_docx_to_pdf
+    raise ValueError(f"Unsupported input type: {input_type}")
 
 
 def _to_file_url(input_path):

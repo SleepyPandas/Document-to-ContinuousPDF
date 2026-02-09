@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-02-08
+
+### Added
+- DOCX to PDF conversion support with `convert_docx_to_html` and `convert_docx_to_pdf`.
+- `seamless_pdf.docx_converter` module powered by mammoth.
+- Converter facade now accepts `.docx` files and routes them through the new DOCX pipeline.
+- `mammoth` added as a project dependency.
+
+## [0.2.0] - 2026-01-25
+
+### Added
+- Markdown to HTML conversion support with `convert_markdown_to_html` and `convert_markdown_to_pdf`.
+- `seamless_pdf.markdown_converter` module.
+- Convert Follows Facade Pattern will Take HTML or MD and output a PDF.
+
 ## [[0.1.1]](https://github.com/SleepyPandas/Document-to-ContinuousPDF/commits/v0.1.1?since=2026-01-10&until=2026-01-11) - 2026-01-07
 
 ### Added

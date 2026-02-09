@@ -4,16 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "seamless-pdf"
-version = "0.1.1"
+version = "0.3.0"
 authors = [
   { name="Anthony Hua", email="tommyrobotics1@gmail.com" },
 ]
-description = "Convert HTML documents into continuous, single-page PDFs."
+description = "Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs."
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "playwright >=1.40.0",
+    "markdown >=3.10.1",
+    "Pygments >=2.17.0",
+    "pymdown-extensions >=10.0",
+    "mammoth >=1.6.0",
 ]
 
 [project.scripts]
