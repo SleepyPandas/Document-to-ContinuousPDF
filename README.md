@@ -63,8 +63,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Roadmap
 
-- Add support for additional input formats (PDF, Word)
+- Add support for additional input formats (PDF to PDF)
 - Improve error handling and diagnostics
 - Broaden the PDF manipulation toolset
-- HTML/PDF to mobile-friendly interface
 - Dark mode PDF output
+
