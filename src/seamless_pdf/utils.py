@@ -53,6 +53,7 @@ css_style = """
 
 _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
+_DOCX_EXTENSIONS = {".docx"}
 
 
 def timer(func):
@@ -114,7 +115,7 @@ def detect_input_type(input_path):
         input_path (str | Path): Input file path or file:// URL.
 
     Returns:
-        str: "html" or "markdown" based on extension.
+        str: "html", "markdown", or "docx" based on extension.
 
     Raises:
         ValueError: If the extension is not supported.
@@ -124,8 +125,11 @@ def detect_input_type(input_path):
         return "html"
     if suffix in _MARKDOWN_EXTENSIONS:
         return "markdown"
+    if suffix in _DOCX_EXTENSIONS:
+        return "docx"
     raise ValueError(
-        "Unsupported input type. Supported extensions: .html, .htm, .md, .markdown"
+        "Unsupported input type. Supported extensions: "
+        ".html, .htm, .md, .markdown, .docx"
     )
 
 

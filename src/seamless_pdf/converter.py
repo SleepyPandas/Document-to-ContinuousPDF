@@ -7,6 +7,7 @@ place, then wraps underlying errors in a package-specific exception.
 
 from seamless_pdf.markdown_converter import convert_markdown_to_pdf
 from seamless_pdf.html_converter import convert_html_to_pdf
+from seamless_pdf.docx_converter import convert_docx_to_pdf
 from seamless_pdf.utils import detect_input_type, timer
 from seamless_pdf.exceptions import PDFConversionError
 
@@ -17,6 +18,8 @@ def _get_converter(input_type):
         return convert_html_to_pdf
     if input_type == "markdown":
         return convert_markdown_to_pdf
+    if input_type == "docx":
+        return convert_docx_to_pdf
     raise ValueError(f"Unsupported input type: {input_type}")
 
 
