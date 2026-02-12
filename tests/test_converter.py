@@ -81,7 +81,12 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     convert(str(input_file), str(output_file))
 
     # Assertions: Did it do what we expect?
-    mock_page.goto.assert_called()
+    mock_page.goto.assert_called_once()
+    assert mock_page.goto.call_args.kwargs["wait_until"] == "domcontentloaded"
+    assert mock_page.goto.call_args.kwargs["timeout"] == 30000
+    mock_page.wait_for_load_state.assert_any_call("domcontentloaded", timeout=10000)
+    mock_page.wait_for_load_state.assert_any_call("load", timeout=10000)
+    mock_page.wait_for_function.assert_called_once()
 
     # Verify PDF generation args
     mock_page.pdf.assert_called_with(
