@@ -85,6 +85,7 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     mock_page.goto.assert_called_once()
     assert mock_page.goto.call_args.kwargs["wait_until"] == "domcontentloaded"
     assert mock_page.goto.call_args.kwargs["timeout"] == 30000
+    mock_page.emulate_media.assert_called_once_with(media="screen", color_scheme="light")
     mock_page.wait_for_load_state.assert_any_call("domcontentloaded", timeout=10000)
     mock_page.wait_for_load_state.assert_any_call("load", timeout=10000)
     mock_page.wait_for_function.assert_called_once()
@@ -109,7 +110,21 @@ def test_convert_uses_input_type_override_without_detection(tmp_path):
             convert("document.unknown", str(output_file), input_type="markdown")
 
     mock_detect.assert_not_called()
-    mock_markdown_converter.assert_called_once_with("document.unknown", str(output_file))
+    mock_markdown_converter.assert_called_once_with(
+        "document.unknown", str(output_file), theme="light"
+    )
+
+
+def test_convert_passes_theme_to_selected_converter(tmp_path):
+    """Test that theme is forwarded to the selected converter."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.convert_docx_to_pdf") as mock_docx_converter:
+        convert("document.docx", str(output_file), theme="dark")
+
+    mock_docx_converter.assert_called_once_with(
+        "document.docx", str(output_file), theme="dark"
+    )
 
 
 def test_convert_wraps_converter_failure_in_pdf_conversion_error(tmp_path):
@@ -128,3 +143,11 @@ def test_convert_wraps_unsupported_input_type_errors(tmp_path):
 
     with pytest.raises(PDFConversionError, match="Unsupported input type"):
         convert("document.md", str(output_file), input_type="rst")
+
+
+def test_convert_wraps_unsupported_theme_errors(tmp_path):
+    """Test unsupported themes are wrapped consistently."""
+    output_file = tmp_path / "output.pdf"
+
+    with pytest.raises(PDFConversionError, match="Unsupported theme"):
+        convert("document.md", str(output_file), input_type="markdown", theme="sepia")

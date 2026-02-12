@@ -11,9 +11,11 @@ def main():
     """Parse CLI arguments and run the conversion."""
     # Define CLI arguments and defaults.
     parser = argparse.ArgumentParser(
-        description="Convert an HTML or Markdown document to a continuous PDF."
+        description="Convert an HTML, Markdown, or DOCX document to a continuous PDF."
     )
-    parser.add_argument("input_file", help="Path to the input HTML or Markdown file.")
+    parser.add_argument(
+        "input_file", help="Path to the input HTML, Markdown, or DOCX file."
+    )
     parser.add_argument(
         "-o",
         "--output",
@@ -26,12 +28,20 @@ def main():
         default=None,
         help="Optional input type override (html, markdown, or docx).",
     )
+    parser.add_argument(
+        "--theme",
+        choices=["light", "dark"],
+        default="light",
+        help="Optional render theme for generated PDF output (default: light).",
+    )
 
     args = parser.parse_args()
 
     try:
         # Run the conversion and report success.
-        convert(args.input_file, args.output, input_type=args.input_type)
+        convert(
+            args.input_file, args.output, input_type=args.input_type, theme=args.theme
+        )
         print(f"Successfully converted '{args.input_file}' to '{args.output}'")
     except Exception as e:
         # Surface errors on stderr and exit with a non-zero code.

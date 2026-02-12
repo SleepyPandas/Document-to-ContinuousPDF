@@ -7,9 +7,9 @@ from urllib.parse import unquote, urlparse
 from pathlib import Path
 import time
 
-# GitHub-like CSS used when rendering Markdown to HTML.
+# GitHub-like CSS used when rendering Markdown and DOCX to HTML.
 
-css_style = """
+LIGHT_CSS_STYLE = """
 <style>
     body {
         box-sizing: border-box;
@@ -50,10 +50,92 @@ css_style = """
 </style>
 """
 
+DARK_CSS_STYLE = """
+<style>
+    body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        font-size: 16px;
+        line-height: 1.5;
+        color: #c9d1d9;
+        background-color: #0d1117;
+    }
+
+    h1, h2, h3 { margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { padding-bottom: 0.3em; border-bottom: 1px solid #30363d; }
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1.25em; }
+
+    /* Code Blocks */
+    pre { background-color: #161b22; border-radius: 6px; padding: 16px; overflow: auto; }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 85%; background-color: rgba(110,118,129,0.4); padding: 0.2em 0.4em; border-radius: 3px; }
+    pre > code { background-color: transparent; padding: 0; }
+
+    /* Blockquotes */
+    blockquote { padding: 0 1em; color: #8b949e; border-left: 0.25em solid #30363d; margin: 0; }
+
+    /* Links */
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Tables (GitHub style) */
+    table { border-spacing: 0; border-collapse: collapse; display: block; width: max-content; max-width: 100%; overflow: auto; }
+    tr { border-top: 1px solid #30363d; background-color: #0d1117; }
+    tr:nth-child(2n) { background-color: #161b22; }
+    th, td { padding: 6px 13px; border: 1px solid #30363d; }
+    th { font-weight: 600; }
+</style>
+"""
+
+# Backward-compatible alias for tests/importers that still expect css_style.
+css_style = LIGHT_CSS_STYLE
+
+_THEME_TO_CSS = {"light": LIGHT_CSS_STYLE, "dark": DARK_CSS_STYLE}
+
 
 _HTML_EXTENSIONS = {".html", ".htm"}
 _MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 _DOCX_EXTENSIONS = {".docx"}
+
+
+def normalize_theme(theme):
+    """
+    Normalize and validate a render theme name.
+
+    Args:
+        theme (str | None): Theme identifier ("light" or "dark").
+
+    Returns:
+        str: Normalized theme value.
+
+    Raises:
+        ValueError: If the requested theme is unsupported.
+    """
+    if theme is None:
+        return "light"
+
+    normalized = str(theme).strip().lower()
+    if normalized not in _THEME_TO_CSS:
+        raise ValueError("Unsupported theme. Supported themes: light, dark")
+    return normalized
+
+
+def get_css_style(theme="light"):
+    """
+    Return the CSS style block for a given render theme.
+
+    Args:
+        theme (str): Render theme ("light" or "dark").
+
+    Returns:
+        str: CSS style block for HTML output.
+    """
+    return _THEME_TO_CSS[normalize_theme(theme)]
 
 
 def timer(func):

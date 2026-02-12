@@ -25,7 +25,7 @@ def test_cli_success(tmp_path):
                 main()
 
                 mock_convert.assert_called_once_with(
-                    str(input_file), str(output_file), input_type=None
+                    str(input_file), str(output_file), input_type=None, theme="light"
                 )
                 mock_print.assert_any_call(
                     f"Successfully converted '{input_file}' to '{output_file}'"
@@ -48,7 +48,7 @@ def test_cli_defaults(tmp_path):
 
                 # Default output is "output.pdf"
                 mock_convert.assert_called_once_with(
-                    str(input_file), "output.pdf", input_type=None
+                    str(input_file), "output.pdf", input_type=None, theme="light"
                 )
                 mock_print.assert_any_call(
                     f"Successfully converted '{input_file}' to 'output.pdf'"
@@ -75,7 +75,31 @@ def test_cli_input_type_override(tmp_path):
                 main()
 
     mock_convert.assert_called_once_with(
-        str(input_file), str(output_file), input_type="markdown"
+        str(input_file), str(output_file), input_type="markdown", theme="light"
+    )
+
+
+def test_cli_theme_override(tmp_path):
+    """Test the CLI passes through --theme to convert()."""
+    input_file = tmp_path / "input.md"
+    input_file.touch()
+    output_file = tmp_path / "result.pdf"
+    test_args = [
+        "program_name",
+        str(input_file),
+        "-o",
+        str(output_file),
+        "--theme",
+        "dark",
+    ]
+
+    with patch.object(sys, "argv", test_args):
+        with patch("seamless_pdf.cli.convert") as mock_convert:
+            with patch("builtins.print"):
+                main()
+
+    mock_convert.assert_called_once_with(
+        str(input_file), str(output_file), input_type=None, theme="dark"
     )
 
 
@@ -120,6 +144,19 @@ def test_cli_missing_args(capsys):
 def test_cli_invalid_input_type_choice(capsys):
     """Test argparse rejects invalid --input-type values."""
     test_args = ["program_name", "input.html", "--input-type", "txt"]
+
+    with patch.object(sys, "argv", test_args):
+        with pytest.raises(SystemExit) as excinfo:
+            main()
+
+    assert excinfo.value.code == 2
+    captured = capsys.readouterr()
+    assert "invalid choice" in captured.err
+
+
+def test_cli_invalid_theme_choice(capsys):
+    """Test argparse rejects invalid --theme values."""
+    test_args = ["program_name", "input.html", "--theme", "sepia"]
 
     with patch.object(sys, "argv", test_args):
         with pytest.raises(SystemExit) as excinfo:

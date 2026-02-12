@@ -4,7 +4,7 @@ HTML to PDF conversion using Playwright and a single long page size.
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
-from seamless_pdf.utils import to_file_url
+from seamless_pdf.utils import normalize_theme, to_file_url
 
 DEFAULT_NAVIGATION_TIMEOUT_MS = 30_000
 DEFAULT_LOAD_STATE_TIMEOUT_MS = 10_000
@@ -35,13 +35,14 @@ def _wait_for_page_to_settle(page):
     page.wait_for_timeout(DEFAULT_RENDER_SETTLE_MS)
 
 
-def convert_html_to_pdf(input_path, output_path="output.pdf"):
+def convert_html_to_pdf(input_path, output_path="output.pdf", theme="light"):
     """
     Convert an HTML document to a continuous PDF.
 
     Args:
         input_path (str): Path to the input document.
         output_path (str): Path to the output PDF.
+        theme (str): Render theme ("light" or "dark").
 
     Returns:
         None
@@ -52,6 +53,7 @@ def convert_html_to_pdf(input_path, output_path="output.pdf"):
     """
 
     with sync_playwright() as playwright:
+        selected_theme = normalize_theme(theme)
 
         # Launch Chromium headless for deterministic, scriptable rendering.
         browser = playwright.chromium.launch(headless=True)
@@ -71,7 +73,7 @@ def convert_html_to_pdf(input_path, output_path="output.pdf"):
         )
 
         # Emulate "screen" media so rendered styles match on-screen output.
-        page.emulate_media(media="screen")
+        page.emulate_media(media="screen", color_scheme=selected_theme)
         _wait_for_page_to_settle(page)
 
         # Compute the full document size to avoid page breaks.

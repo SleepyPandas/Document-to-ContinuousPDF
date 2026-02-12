@@ -10,16 +10,17 @@ import os
 import tempfile
 
 from seamless_pdf.html_converter import convert_html_to_pdf
-from seamless_pdf.utils import css_style
+from seamless_pdf.utils import get_css_style
 
 
-def convert_markdown_to_html(input_path, output_path="output.html"):
+def convert_markdown_to_html(input_path, output_path="output.html", theme="light"):
     """
     Convert a Markdown document to HTML.
 
     Args:
         input_path (str): Path to the input document.
         output_path (str): Path to the output HTML.
+        theme (str): Render theme for injected CSS ("light" or "dark").
 
     Returns:
         None
@@ -61,7 +62,7 @@ def convert_markdown_to_html(input_path, output_path="output.html"):
     <head>
         <meta charset="utf-8">
         <title>GitHub Style Doc</title>
-        {css_style}
+        {get_css_style(theme)}
     </head>
     <body>
         {html_body}
@@ -74,13 +75,14 @@ def convert_markdown_to_html(input_path, output_path="output.html"):
         f.write(final_output)
 
 
-def convert_markdown_to_pdf(input_path, output_path="output.pdf"):
+def convert_markdown_to_pdf(input_path, output_path="output.pdf", theme="light"):
     """
     Convert a Markdown document to a continuous PDF.
 
     Args:
         input_path (str): Path to the input document.
         output_path (str): Path to the output PDF.
+        theme (str): Render theme for generated output ("light" or "dark").
 
     Returns:
         None
@@ -91,8 +93,8 @@ def convert_markdown_to_pdf(input_path, output_path="output.pdf"):
     os.close(temp_fd)
 
     try:
-        convert_markdown_to_html(input_path, temp_html_path)
-        convert_html_to_pdf(temp_html_path, output_path)
+        convert_markdown_to_html(input_path, temp_html_path, theme=theme)
+        convert_html_to_pdf(temp_html_path, output_path, theme=theme)
     finally:
         if os.path.exists(temp_html_path):
             os.remove(temp_html_path)

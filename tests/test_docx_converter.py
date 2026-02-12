@@ -9,7 +9,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from seamless_pdf.docx_converter import convert_docx_to_html, convert_docx_to_pdf
-from seamless_pdf.utils import css_style, detect_input_type
+from seamless_pdf.utils import css_style, detect_input_type, get_css_style
 from seamless_pdf.converter import convert
 
 
@@ -89,7 +89,9 @@ def test_convert_docx_to_pdf_calls_html_pipeline(tmp_path, monkeypatch):
     mock_docx_to_html.assert_called_once()
     temp_html_path = mock_docx_to_html.call_args.args[1]
     assert temp_html_path.endswith(".html")
-    mock_html_to_pdf.assert_called_once_with(temp_html_path, str(output_path))
+    mock_html_to_pdf.assert_called_once_with(
+        temp_html_path, str(output_path), theme="light"
+    )
     assert not Path(temp_html_path).exists()
 
 
@@ -127,6 +129,36 @@ def test_convert_docx_to_pdf_uses_unique_temp_paths_across_runs(tmp_path):
     assert all(not Path(path).exists() for path in temp_paths)
 
 
+def test_convert_docx_to_html_uses_dark_theme_css(tmp_path):
+    docx_path = _make_dummy_docx(tmp_path)
+    output_path = tmp_path / "dark-output.html"
+
+    with patch("seamless_pdf.docx_converter.mammoth.convert_to_html") as mock_convert:
+        mock_result = MagicMock()
+        mock_result.value = "<p>dark theme</p>"
+        mock_result.messages = []
+        mock_convert.return_value = mock_result
+        convert_docx_to_html(str(docx_path), str(output_path), theme="dark")
+
+    contents = output_path.read_text(encoding="utf-8")
+    assert get_css_style("dark") in contents
+
+
+def test_convert_docx_to_pdf_passes_dark_theme_to_pipeline(tmp_path):
+    docx_path = _make_dummy_docx(tmp_path)
+    output_path = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.docx_converter.convert_docx_to_html") as mock_docx_to_html:
+        with patch("seamless_pdf.docx_converter.convert_html_to_pdf") as mock_html_to_pdf:
+            convert_docx_to_pdf(str(docx_path), str(output_path), theme="dark")
+
+    temp_html_path = mock_docx_to_html.call_args.args[1]
+    mock_docx_to_html.assert_called_once_with(str(docx_path), temp_html_path, theme="dark")
+    mock_html_to_pdf.assert_called_once_with(
+        temp_html_path, str(output_path), theme="dark"
+    )
+
+
 def test_convert_docx_to_pdf_cleans_temp_when_docx_stage_fails(tmp_path):
     docx_path = _make_dummy_docx(tmp_path)
     output_path = tmp_path / "output.pdf"
@@ -153,4 +185,6 @@ def test_convert_routes_docx(tmp_path):
     with patch("seamless_pdf.converter.convert_docx_to_pdf") as mock_docx_to_pdf:
         convert(str(docx_path), str(output_path))
 
-    mock_docx_to_pdf.assert_called_once_with(str(docx_path), str(output_path))
+    mock_docx_to_pdf.assert_called_once_with(
+        str(docx_path), str(output_path), theme="light"
+    )
