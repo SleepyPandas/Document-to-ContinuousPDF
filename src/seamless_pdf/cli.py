@@ -20,12 +20,18 @@ def main():
         default="output.pdf",
         help="Path to the output PDF file (default: output.pdf).",
     )
+    parser.add_argument(
+        "--input-type",
+        choices=["html", "markdown", "docx"],
+        default=None,
+        help="Optional input type override (html, markdown, or docx).",
+    )
 
     args = parser.parse_args()
 
     try:
         # Run the conversion and report success.
-        convert(args.input_file, args.output)
+        convert(args.input_file, args.output, input_type=args.input_type)
         print(f"Successfully converted '{args.input_file}' to '{args.output}'")
     except Exception as e:
         # Surface errors on stderr and exit with a non-zero code.
