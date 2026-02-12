@@ -5,9 +5,12 @@ This module converts Markdown to HTML (with GitHub-like styling) and then
 to a continuous PDF via the HTML converter.
 """
 
+import markdown
+import os
+import tempfile
+
 from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.utils import css_style
-import markdown
 
 
 def convert_markdown_to_html(input_path, output_path="output.html"):
@@ -83,6 +86,13 @@ def convert_markdown_to_pdf(input_path, output_path="output.pdf"):
         None
     """
 
-    # Convert Markdown to a temporary HTML file, then render to PDF.
-    convert_markdown_to_html(input_path, "temp.html")
-    convert_html_to_pdf("temp.html", output_path)
+    # Convert Markdown to a unique temporary HTML file, then render to PDF.
+    temp_fd, temp_html_path = tempfile.mkstemp(suffix=".html")
+    os.close(temp_fd)
+
+    try:
+        convert_markdown_to_html(input_path, temp_html_path)
+        convert_html_to_pdf(temp_html_path, output_path)
+    finally:
+        if os.path.exists(temp_html_path):
+            os.remove(temp_html_path)
