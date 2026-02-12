@@ -110,6 +110,38 @@ def test_convert_docx_to_pdf_cleans_temp_file_on_failure(tmp_path):
     assert not Path(temp_html_path).exists()
 
 
+def test_convert_docx_to_pdf_uses_unique_temp_paths_across_runs(tmp_path):
+    docx_path = _make_dummy_docx(tmp_path)
+    output_file_a = tmp_path / "output-a.pdf"
+    output_file_b = tmp_path / "output-b.pdf"
+
+    with patch("seamless_pdf.docx_converter.convert_docx_to_html") as mock_docx_to_html:
+        with patch("seamless_pdf.docx_converter.convert_html_to_pdf"):
+            convert_docx_to_pdf(str(docx_path), str(output_file_a))
+            convert_docx_to_pdf(str(docx_path), str(output_file_b))
+
+    temp_paths = [call.args[1] for call in mock_docx_to_html.call_args_list]
+    assert len(temp_paths) == 2
+    assert temp_paths[0] != temp_paths[1]
+    assert all(path.endswith(".html") for path in temp_paths)
+    assert all(not Path(path).exists() for path in temp_paths)
+
+
+def test_convert_docx_to_pdf_cleans_temp_when_docx_stage_fails(tmp_path):
+    docx_path = _make_dummy_docx(tmp_path)
+    output_path = tmp_path / "output.pdf"
+
+    with patch(
+        "seamless_pdf.docx_converter.convert_docx_to_html",
+        side_effect=RuntimeError("DOCX conversion failed"),
+    ) as mock_docx_to_html:
+        with pytest.raises(RuntimeError, match="DOCX conversion failed"):
+            convert_docx_to_pdf(str(docx_path), str(output_path))
+
+    temp_html_path = mock_docx_to_html.call_args.args[1]
+    assert not Path(temp_html_path).exists()
+
+
 def test_detect_input_type_docx():
     assert detect_input_type("file.docx") == "docx"
 
