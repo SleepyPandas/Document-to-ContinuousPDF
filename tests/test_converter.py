@@ -8,6 +8,7 @@ import pytest
 from pathlib import Path
 from seamless_pdf.utils import to_file_url
 import os
+from seamless_pdf.exceptions import PDFConversionError
 
 
 def test_to_file_url_absolute_path(tmp_path):
@@ -95,3 +96,35 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
 
     # Verify cleanup
     mock_browser.close.assert_called()
+
+
+def test_convert_uses_input_type_override_without_detection(tmp_path):
+    """Test that explicit input_type bypasses extension detection."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.detect_input_type") as mock_detect:
+        with patch(
+            "seamless_pdf.converter.convert_markdown_to_pdf"
+        ) as mock_markdown_converter:
+            convert("document.unknown", str(output_file), input_type="markdown")
+
+    mock_detect.assert_not_called()
+    mock_markdown_converter.assert_called_once_with("document.unknown", str(output_file))
+
+
+def test_convert_wraps_converter_failure_in_pdf_conversion_error(tmp_path):
+    """Test converter failures are normalized to PDFConversionError."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.convert_html_to_pdf") as mock_html_converter:
+        mock_html_converter.side_effect = RuntimeError("renderer crashed")
+        with pytest.raises(PDFConversionError, match="renderer crashed"):
+            convert("document.html", str(output_file))
+
+
+def test_convert_wraps_unsupported_input_type_errors(tmp_path):
+    """Test unsupported input type override is wrapped consistently."""
+    output_file = tmp_path / "output.pdf"
+
+    with pytest.raises(PDFConversionError, match="Unsupported input type"):
+        convert("document.md", str(output_file), input_type="rst")
