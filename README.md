@@ -99,6 +99,18 @@ seamless-pdf docs/notes.txt -o notes.pdf --input-type markdown
 seamless-pdf docs/notes.md -o notes-dark.pdf --theme dark
 ```
 
+### NOTES on DARKMODE FLAG
+
+Dark mode behavior depends on the input type:
+
+- **Markdown / DOCX inputs**: Seamless PDF generates HTML and injects the selected theme styles. Using `--theme dark` (or `theme="dark"`) is expected to produce dark-themed output consistently.
+- **HTML inputs**: Seamless PDF respects the source HTML/CSS and renders it as-is in Chromium with dark color-scheme emulation. If the source HTML is not dark-aware (for example, no dark styles, no `prefers-color-scheme` rules, or hardcoded light colors), dark output is **best effort** and cannot be guaranteed.
+
+Practical guidance:
+
+- For guaranteed dark output from HTML, provide HTML that already supports dark mode.
+- For light-only HTML, `--theme dark` remains available but may produce mixed contrast depending on the original styles.
+
 ### Supported Input Types
 
 | Extension | Type Keyword |
