@@ -27,7 +27,10 @@ Standard PDF converters split your content across fixed-size pages. **Seamless P
 | **Single-Page Output** | One continuous PDF sized exactly to your content |
 | **Multi-Format Input** | Supports `.html`, `.md`, `.markdown`, and `.docx` files |
 | **CLI & Python API** | Use from the terminal or integrate directly into your code |
-| **Markdown Rendering** | GitHub-flavored Markdown with syntax highlighting via Pygments
+| **Markdown Rendering** | GitHub-flavored Markdown with syntax highlighting via Pygments |
+| **Theme Selection (v0.4.0)** | Render output with `light` or `dark` theme via API/CLI |
+| **Reliability Improvements (v0.4.0)** | Safer temp-file handling and stronger HTML render wait strategy |
+| **DOCX Diagnostics (v0.4.0)** | Mammoth conversion warnings/errors are surfaced clearly |
 
 
 ---
@@ -53,6 +56,7 @@ playwright install
 seamless-pdf input.html -o output.pdf
 seamless-pdf README.md -o README.pdf
 seamless-pdf report.docx -o report.pdf
+seamless-pdf README.md -o README-dark.pdf --theme dark
 ```
 
 ### Python API
@@ -63,6 +67,7 @@ from seamless_pdf import convert
 convert("input.html", "output.pdf")
 convert("README.md", "readme.pdf")
 convert("report.docx", "report.pdf")
+convert("README.md", "readme-dark.pdf", theme="dark")
 ```
 
 ---
@@ -79,6 +84,19 @@ convert("docs/notes.md", "notes.pdf")
 
 # Explicit input type override
 convert("docs/notes.txt", "notes.pdf", input_type="markdown")
+
+# Optional render theme (light or dark)
+convert("docs/notes.md", "notes-dark.pdf", theme="dark")
+```
+
+### CLI Options
+
+```bash
+# Explicit input type override
+seamless-pdf docs/notes.txt -o notes.pdf --input-type markdown
+
+# Dark theme rendering
+seamless-pdf docs/notes.md -o notes-dark.pdf --theme dark
 ```
 
 ### Supported Input Types
@@ -107,9 +125,17 @@ convert("docs/notes.txt", "notes.pdf", input_type="markdown")
 ## Roadmap
 
 - [ ] PDF-to-PDF re-rendering (merge & reflow existing PDFs)
-- [ ] Improved error handling and diagnostics
 - [ ] Broader PDF manipulation toolset
-- [ ] Dark mode PDF output
+
+---
+
+## What's New in v0.4.0
+
+- Added optional dark-mode rendering through `theme="dark"` (API) and `--theme dark` (CLI).
+- Replaced hardcoded temporary intermediate HTML filenames with per-run temp files and cleanup for safer concurrent conversions.
+- Hardened Playwright page-settle behavior before document measurement/PDF export to reduce race-condition failures.
+- DOCX conversion now surfaces Mammoth diagnostics (warnings and errors) instead of silently ignoring conversion messages.
+- Added developer extras and coverage config so editable development installs are documented and reproducible.
 
 ---
 
