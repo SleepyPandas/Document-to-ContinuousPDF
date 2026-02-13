@@ -8,7 +8,7 @@ place, then wraps underlying errors in a package-specific exception.
 from seamless_pdf.markdown_converter import convert_markdown_to_pdf
 from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.docx_converter import convert_docx_to_pdf
-from seamless_pdf.utils import detect_input_type, timer
+from seamless_pdf.utils import detect_input_type, normalize_theme, timer
 from seamless_pdf.exceptions import PDFConversionError
 
 
@@ -24,7 +24,7 @@ def _get_converter(input_type):
 
 
 @timer
-def convert(input_path, output_path="output.pdf", input_type=None):
+def convert(input_path, output_path="output.pdf", input_type=None, theme="light"):
     """
     Convert a supported document to a continuous PDF.
 
@@ -32,6 +32,7 @@ def convert(input_path, output_path="output.pdf", input_type=None):
         input_path (str): Path to the input document.
         output_path (str): Path to the output PDF.
         input_type (str | None): Optional override for input type detection.
+        theme (str): Render theme ("light" or "dark").
 
     Returns:
         Any: The return value from the underlying converter, if any.
@@ -43,9 +44,10 @@ def convert(input_path, output_path="output.pdf", input_type=None):
     try:
         # Use a caller-provided type override, or detect from the input path.
         detected_type = input_type or detect_input_type(input_path)
+        selected_theme = normalize_theme(theme)
         # Dispatch to the appropriate converter function.
         converter = _get_converter(detected_type)
-        return converter(input_path, output_path)
+        return converter(input_path, output_path, theme=selected_theme)
     except Exception as e:
         # Normalize all errors into one package-specific exception.
         raise PDFConversionError(f"Failed to convert {input_path}: {str(e)}") from e

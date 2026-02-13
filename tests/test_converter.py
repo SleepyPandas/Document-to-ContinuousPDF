@@ -8,6 +8,7 @@ import pytest
 from pathlib import Path
 from seamless_pdf.utils import to_file_url
 import os
+from seamless_pdf.exceptions import PDFConversionError
 
 
 def test_to_file_url_absolute_path(tmp_path):
@@ -81,7 +82,13 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     convert(str(input_file), str(output_file))
 
     # Assertions: Did it do what we expect?
-    mock_page.goto.assert_called()
+    mock_page.goto.assert_called_once()
+    assert mock_page.goto.call_args.kwargs["wait_until"] == "domcontentloaded"
+    assert mock_page.goto.call_args.kwargs["timeout"] == 30000
+    mock_page.emulate_media.assert_called_once_with(media="screen", color_scheme="light")
+    mock_page.wait_for_load_state.assert_any_call("domcontentloaded", timeout=10000)
+    mock_page.wait_for_load_state.assert_any_call("load", timeout=10000)
+    mock_page.wait_for_function.assert_called_once()
 
     # Verify PDF generation args
     mock_page.pdf.assert_called_with(
@@ -90,3 +97,57 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
 
     # Verify cleanup
     mock_browser.close.assert_called()
+
+
+def test_convert_uses_input_type_override_without_detection(tmp_path):
+    """Test that explicit input_type bypasses extension detection."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.detect_input_type") as mock_detect:
+        with patch(
+            "seamless_pdf.converter.convert_markdown_to_pdf"
+        ) as mock_markdown_converter:
+            convert("document.unknown", str(output_file), input_type="markdown")
+
+    mock_detect.assert_not_called()
+    mock_markdown_converter.assert_called_once_with(
+        "document.unknown", str(output_file), theme="light"
+    )
+
+
+def test_convert_passes_theme_to_selected_converter(tmp_path):
+    """Test that theme is forwarded to the selected converter."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.convert_docx_to_pdf") as mock_docx_converter:
+        convert("document.docx", str(output_file), theme="dark")
+
+    mock_docx_converter.assert_called_once_with(
+        "document.docx", str(output_file), theme="dark"
+    )
+
+
+def test_convert_wraps_converter_failure_in_pdf_conversion_error(tmp_path):
+    """Test converter failures are normalized to PDFConversionError."""
+    output_file = tmp_path / "output.pdf"
+
+    with patch("seamless_pdf.converter.convert_html_to_pdf") as mock_html_converter:
+        mock_html_converter.side_effect = RuntimeError("renderer crashed")
+        with pytest.raises(PDFConversionError, match="renderer crashed"):
+            convert("document.html", str(output_file))
+
+
+def test_convert_wraps_unsupported_input_type_errors(tmp_path):
+    """Test unsupported input type override is wrapped consistently."""
+    output_file = tmp_path / "output.pdf"
+
+    with pytest.raises(PDFConversionError, match="Unsupported input type"):
+        convert("document.md", str(output_file), input_type="rst")
+
+
+def test_convert_wraps_unsupported_theme_errors(tmp_path):
+    """Test unsupported themes are wrapped consistently."""
+    output_file = tmp_path / "output.pdf"
+
+    with pytest.raises(PDFConversionError, match="Unsupported theme"):
+        convert("document.md", str(output_file), input_type="markdown", theme="sepia")

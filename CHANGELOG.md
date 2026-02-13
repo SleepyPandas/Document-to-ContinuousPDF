@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-02-13
+
+### Added
+- Dark/light render theme selection across API and CLI (`theme="dark"` and `--theme dark`).
+- Dedicated CSS theme mapping helpers for consistent Markdown and DOCX styling.
+- Documented developer extras workflow with coverage / testing tooling support (`pip install -e ".[dev]"`).
+
+### Changed
+- Markdown and DOCX conversion pipelines now use unique per-run temporary HTML files with guaranteed cleanup.
+- HTML rendering waits for stronger load-state signals before measuring page dimensions and generating PDF.
+- README now includes v0.4.0 usage examples and release-focused documentation updates.
+
+### Fixed
+- DOCX conversion now surfaces Mammoth diagnostics instead of silently dropping conversion warnings/errors.
+- Reduced intermittent PDF generation failures caused by timing/load-state races during HTML rendering.
+- Fixed Markdown documents embed tags rendering as plain text
+
 ## [0.3.0] - 2026-02-08
 
 ### Added
