@@ -7,10 +7,32 @@ to a continuous PDF via the HTML converter.
 
 import markdown
 import os
+import re
 import tempfile
 
 from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.utils import get_css_style
+
+def _enable_markdown_inside_center_divs(text):
+    """
+    Add markdown=\"1\" to centered div wrappers so Markdown badges render.
+    """
+
+    def _replace_div(match):
+        attrs = match.group("attrs") or ""
+        attrs_lower = attrs.lower()
+        if "markdown=" in attrs_lower:
+            return match.group(0)
+        if "align" not in attrs_lower or "center" not in attrs_lower:
+            return match.group(0)
+        return f"<div{attrs} markdown=\"1\">"
+
+    return re.sub(
+        r"<div(?P<attrs>[^>]*)>",
+        _replace_div,
+        text,
+        flags=re.IGNORECASE,
+    )
 
 
 def convert_markdown_to_html(input_path, output_path="output.html", theme="light"):
@@ -29,11 +51,13 @@ def convert_markdown_to_html(input_path, output_path="output.html", theme="light
     # Read Markdown source from disk.
     with open(input_path, "r", encoding="utf-8") as f:
         text = f.read()
+    text = _enable_markdown_inside_center_divs(text)
 
     # Enable a rich set of Markdown extensions for a GitHub-like experience.
     extensions = [
         # --- Standard Built-ins ---
         "extra",  # Tables, Footnotes, Definition Lists, Abbreviations
+        "md_in_html",  # Enable Markdown parsing inside opted-in raw HTML blocks
         "codehilite",  # Syntax Highlighting
         "toc",  # Auto-generates Table of Contents [TOC]
         "admonition",  # "Note" and "Warning" callout blocks
