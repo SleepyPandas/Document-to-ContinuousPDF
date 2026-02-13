@@ -5,7 +5,7 @@ Provides helpers to convert HTML, Markdown, and DOCX files into a single,
 continuous PDF without page breaks.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 # Re-export common entry points for convenience.
 from .converter import convert
