@@ -38,7 +38,9 @@ def _emit_docx_diagnostics(messages):
 
     diagnostics = _format_mammoth_diagnostics(messages)
     diagnostic_message = f"DOCX conversion reported diagnostics:\n{diagnostics}"
-    has_errors = any(str(getattr(msg, "type", "")).lower() == "error" for msg in messages)
+    has_errors = any(
+        str(getattr(msg, "type", "")).lower() == "error" for msg in messages
+    )
 
     if has_errors:
         raise ValueError(diagnostic_message)
@@ -88,7 +90,9 @@ def convert_docx_to_html(input_path, output_path="output.html", theme="light"):
         f.write(final_output)
 
 
-def convert_docx_to_pdf(input_path, output_path="output.pdf", theme="light"):
+def convert_docx_to_pdf(
+    input_path, output_path="output.pdf", theme="light", width=None
+):
     """
     Convert a DOCX document to a continuous PDF.
 
@@ -96,6 +100,7 @@ def convert_docx_to_pdf(input_path, output_path="output.pdf", theme="light"):
         input_path (str): Path to the input DOCX document.
         output_path (str): Path to the output PDF.
         theme (str): Render theme for generated output ("light" or "dark").
+        width (str | None): Optional page width.
 
     Returns:
         None
@@ -107,7 +112,7 @@ def convert_docx_to_pdf(input_path, output_path="output.pdf", theme="light"):
 
     try:
         convert_docx_to_html(input_path, temp_html_path, theme=theme)
-        convert_html_to_pdf(temp_html_path, output_path, theme=theme)
+        convert_html_to_pdf(temp_html_path, output_path, theme=theme, width=width)
     finally:
         if os.path.exists(temp_html_path):
             os.remove(temp_html_path)

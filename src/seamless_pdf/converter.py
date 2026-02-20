@@ -24,7 +24,9 @@ def _get_converter(input_type):
 
 
 @timer
-def convert(input_path, output_path="output.pdf", input_type=None, theme="light"):
+def convert(
+    input_path, output_path="output.pdf", input_type=None, theme="light", width=None
+):
     """
     Convert a supported document to a continuous PDF.
 
@@ -47,7 +49,7 @@ def convert(input_path, output_path="output.pdf", input_type=None, theme="light"
         selected_theme = normalize_theme(theme)
         # Dispatch to the appropriate converter function.
         converter = _get_converter(detected_type)
-        return converter(input_path, output_path, theme=selected_theme)
+        return converter(input_path, output_path, theme=selected_theme, width=width)
     except Exception as e:
         # Normalize all errors into one package-specific exception.
         raise PDFConversionError(f"Failed to convert {input_path}: {str(e)}") from e

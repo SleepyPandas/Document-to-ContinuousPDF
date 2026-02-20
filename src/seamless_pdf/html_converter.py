@@ -35,7 +35,9 @@ def _wait_for_page_to_settle(page):
     page.wait_for_timeout(DEFAULT_RENDER_SETTLE_MS)
 
 
-def convert_html_to_pdf(input_path, output_path="output.pdf", theme="light"):
+def convert_html_to_pdf(
+    input_path, output_path="output.pdf", theme="light", width=None
+):
     """
     Convert an HTML document to a continuous PDF.
 
@@ -43,6 +45,7 @@ def convert_html_to_pdf(input_path, output_path="output.pdf", theme="light"):
         input_path (str): Path to the input document.
         output_path (str): Path to the output PDF.
         theme (str): Render theme ("light" or "dark").
+        width (str | None): Optional page width (e.g., '800px').
 
     Returns:
         None
@@ -100,7 +103,7 @@ def convert_html_to_pdf(input_path, output_path="output.pdf", theme="light"):
             )
             + "px"
         )
-        page_width = (
+        page_width = width or (
             str(
                 int(
                     page.evaluate(

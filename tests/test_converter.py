@@ -85,7 +85,9 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     mock_page.goto.assert_called_once()
     assert mock_page.goto.call_args.kwargs["wait_until"] == "domcontentloaded"
     assert mock_page.goto.call_args.kwargs["timeout"] == 30000
-    mock_page.emulate_media.assert_called_once_with(media="screen", color_scheme="light")
+    mock_page.emulate_media.assert_called_once_with(
+        media="screen", color_scheme="light"
+    )
     mock_page.wait_for_load_state.assert_any_call("domcontentloaded", timeout=10000)
     mock_page.wait_for_load_state.assert_any_call("load", timeout=10000)
     mock_page.wait_for_function.assert_called_once()
@@ -111,7 +113,7 @@ def test_convert_uses_input_type_override_without_detection(tmp_path):
 
     mock_detect.assert_not_called()
     mock_markdown_converter.assert_called_once_with(
-        "document.unknown", str(output_file), theme="light"
+        "document.unknown", str(output_file), theme="light", width=None
     )
 
 
@@ -123,7 +125,7 @@ def test_convert_passes_theme_to_selected_converter(tmp_path):
         convert("document.docx", str(output_file), theme="dark")
 
     mock_docx_converter.assert_called_once_with(
-        "document.docx", str(output_file), theme="dark"
+        "document.docx", str(output_file), theme="dark", width=None
     )
 
 

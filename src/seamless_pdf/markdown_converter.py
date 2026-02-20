@@ -13,6 +13,7 @@ import tempfile
 from seamless_pdf.html_converter import convert_html_to_pdf
 from seamless_pdf.utils import get_css_style
 
+
 def _enable_markdown_inside_center_divs(text):
     """
     Add markdown=\"1\" to centered div wrappers so Markdown badges render.
@@ -25,7 +26,7 @@ def _enable_markdown_inside_center_divs(text):
             return match.group(0)
         if "align" not in attrs_lower or "center" not in attrs_lower:
             return match.group(0)
-        return f"<div{attrs} markdown=\"1\">"
+        return f'<div{attrs} markdown="1">'
 
     return re.sub(
         r"<div(?P<attrs>[^>]*)>",
@@ -99,7 +100,9 @@ def convert_markdown_to_html(input_path, output_path="output.html", theme="light
         f.write(final_output)
 
 
-def convert_markdown_to_pdf(input_path, output_path="output.pdf", theme="light"):
+def convert_markdown_to_pdf(
+    input_path, output_path="output.pdf", theme="light", width=None
+):
     """
     Convert a Markdown document to a continuous PDF.
 
@@ -107,6 +110,7 @@ def convert_markdown_to_pdf(input_path, output_path="output.pdf", theme="light")
         input_path (str): Path to the input document.
         output_path (str): Path to the output PDF.
         theme (str): Render theme for generated output ("light" or "dark").
+        width (str | None): Optional page width.
 
     Returns:
         None
@@ -118,7 +122,7 @@ def convert_markdown_to_pdf(input_path, output_path="output.pdf", theme="light")
 
     try:
         convert_markdown_to_html(input_path, temp_html_path, theme=theme)
-        convert_html_to_pdf(temp_html_path, output_path, theme=theme)
+        convert_html_to_pdf(temp_html_path, output_path, theme=theme, width=width)
     finally:
         if os.path.exists(temp_html_path):
             os.remove(temp_html_path)
