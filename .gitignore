@@ -215,3 +215,4 @@ examples/207 individutal contribution.html
 main.py
 test_output.txt
 *.html
+crash_log.txt
