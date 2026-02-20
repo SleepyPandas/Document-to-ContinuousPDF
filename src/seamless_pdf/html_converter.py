@@ -36,7 +36,14 @@ def _wait_for_page_to_settle(page):
 
 
 def convert_html_to_pdf(
-    input_path, output_path="output.pdf", theme="light", width=None
+    input_path,
+    output_path="output.pdf",
+    theme="light",
+    width=None,
+    margin_top=None,
+    margin_right=None,
+    margin_bottom=None,
+    margin_left=None,
 ):
     """
     Convert an HTML document to a continuous PDF.
@@ -46,6 +53,10 @@ def convert_html_to_pdf(
         output_path (str): Path to the output PDF.
         theme (str): Render theme ("light" or "dark").
         width (str | None): Optional page width (e.g., '800px').
+        margin_top (str | None): Top margin.
+        margin_right (str | None): Right margin.
+        margin_bottom (str | None): Bottom margin.
+        margin_left (str | None): Left margin.
 
     Returns:
         None
@@ -128,12 +139,28 @@ def convert_html_to_pdf(
         )
 
         # Export a single-page PDF sized to the full document.
-        page.pdf(
-            path=str(output_path),
-            width=page_width,
-            height=page_height,
-            print_background=True,
-        )
+        pdf_options = {
+            "path": str(output_path),
+            "width": page_width,
+            "height": page_height,
+            "print_background": True,
+        }
+
+        # Apply custom margins if any are provided
+        margins = {}
+        if margin_top:
+            margins["top"] = margin_top
+        if margin_right:
+            margins["right"] = margin_right
+        if margin_bottom:
+            margins["bottom"] = margin_bottom
+        if margin_left:
+            margins["left"] = margin_left
+
+        if margins:
+            pdf_options["margin"] = margins
+
+        page.pdf(**pdf_options)
 
         # Always close the browser to release resources.
         browser.close()

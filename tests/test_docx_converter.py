@@ -90,7 +90,14 @@ def test_convert_docx_to_pdf_calls_html_pipeline(tmp_path, monkeypatch):
     temp_html_path = mock_docx_to_html.call_args.args[1]
     assert temp_html_path.endswith(".html")
     mock_html_to_pdf.assert_called_once_with(
-        temp_html_path, str(output_path), theme="light", width=None
+        temp_html_path,
+        str(output_path),
+        theme="light",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
     assert not Path(temp_html_path).exists()
 
@@ -159,7 +166,14 @@ def test_convert_docx_to_pdf_passes_dark_theme_to_pipeline(tmp_path):
         str(docx_path), temp_html_path, theme="dark"
     )
     mock_html_to_pdf.assert_called_once_with(
-        temp_html_path, str(output_path), theme="dark", width=None
+        temp_html_path,
+        str(output_path),
+        theme="dark",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 
@@ -190,5 +204,12 @@ def test_convert_routes_docx(tmp_path):
         convert(str(docx_path), str(output_path))
 
     mock_docx_to_pdf.assert_called_once_with(
-        str(docx_path), str(output_path), theme="light", width=None
+        str(docx_path),
+        str(output_path),
+        theme="light",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )

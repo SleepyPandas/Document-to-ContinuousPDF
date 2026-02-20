@@ -94,7 +94,10 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
 
     # Verify PDF generation args
     mock_page.pdf.assert_called_with(
-        path=str(output_file), width="800px", height="1000px", print_background=True
+        path=str(output_file),
+        width="800px",
+        height="1000px",
+        print_background=True,
     )
 
     # Verify cleanup
@@ -113,7 +116,14 @@ def test_convert_uses_input_type_override_without_detection(tmp_path):
 
     mock_detect.assert_not_called()
     mock_markdown_converter.assert_called_once_with(
-        "document.unknown", str(output_file), theme="light", width=None
+        "document.unknown",
+        str(output_file),
+        theme="light",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 
@@ -125,7 +135,14 @@ def test_convert_passes_theme_to_selected_converter(tmp_path):
         convert("document.docx", str(output_file), theme="dark")
 
     mock_docx_converter.assert_called_once_with(
-        "document.docx", str(output_file), theme="dark", width=None
+        "document.docx",
+        str(output_file),
+        theme="dark",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 
