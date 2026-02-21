@@ -4,11 +4,13 @@
 
 **Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs -- no page breaks.**
 
-[![PyPI Version](https://img.shields.io/pypi/v/seamless-pdf?style=flat&color=blue)](https://pypi.org/project/seamless-pdf/)
-[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat)](LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/SleepyPandas/Document-to-ContinuousPDF/test.yml?style=flat&label=tests)](https://github.com/SleepyPandas/Document-to-ContinuousPDF/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/seamless-pdf?style=flat&color=7700b8)](https://pypi.org/project/seamless-pdf/)
+[![Downloads](https://static.pepy.tech/badge/seamless-pdf)](https://pepy.tech/project/seamless-pdf)
+[![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-007ec6?style=flat)]()
 
-![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue?style=flat)
+[![CI](https://img.shields.io/github/actions/workflow/status/SleepyPandas/Document-to-ContinuousPDF/test.yml?style=flat&label=tests)](https://github.com/SleepyPandas/Document-to-ContinuousPDF/actions)
+[![Powered by Playwright](https://img.shields.io/badge/powered%20by-Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)](https://playwright.dev/)
+[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat&color=#03fc0b)](LICENSE)
 
 </div>
 
