@@ -34,7 +34,7 @@ Standard PDF converters split your content across fixed-size pages. **Seamless P
 | **Page Width Control (v1.0.0)** | Option to enforce a maximum page width (e.g., `800px`) |
 | **Custom Margins (v1.0.0)** | Added `--margin-top`, `--margin-right`, `--margin-bottom`, and `--margin-left` arguments |
 | **PDF Outlines / Bookmarks (v1.0.0)** | Automatically extracts headers (`<h1>` to `<h6>`) and maps them into native PDF bookmarks |
-| **DOCX Diagnostics** | Mammoth conversion warnings/errors are surfaced clearly |
+
 
 
 ---
@@ -49,7 +49,6 @@ playwright install
 
 > [!IMPORTANT]
 > Playwright uses a headless Chromium browser under the hood to render documents. The standard `pip install` does **not** download the browser binary automatically. For first-time installs or updates, you **must** download the Chromium browser by running `python -m playwright install chromium` followed by `playwright install`.
-> 
 
 ---
 
@@ -118,17 +117,12 @@ seamless-pdf docs/notes.md -o notes-dark.pdf --theme dark
 seamless-pdf docs/notes.md -o notes.pdf --width 800px --margin-left 20px --margin-right 20px
 ```
 
-### NOTES on DARKMODE FLAG
-
-Dark mode behavior depends on the input type:
-
-- **Markdown / DOCX inputs**: Seamless PDF generates HTML and injects the selected theme styles. Using `--theme dark` (or `theme="dark"`) is expected to produce dark-themed output consistently.
-- **HTML inputs**: Seamless PDF respects the source HTML/CSS and renders it as-is in Chromium with dark color-scheme emulation. If the source HTML is not dark-aware (for example, no dark styles, no `prefers-color-scheme` rules, or hardcoded light colors), dark output is **best effort** and cannot be guaranteed.
-
-Practical guidance:
-
-- For guaranteed dark output from HTML, provide HTML that already supports dark mode.
-- For light-only HTML, `--theme dark` remains available but may produce mixed contrast depending on the original styles.
+### Notes on Dark Mode
+> [!NOTE]
+> Dark mode behavior depends on the input type:
+> 
+> - **Markdown / DOCX inputs**: Seamless PDF generates HTML and injects the selected theme styles. Using `--theme dark` is guaranteed to produce dark-themed output consistently.
+> - **HTML inputs**: Seamless PDF respects the source HTML/CSS. If the source HTML is not dark-aware (no dark styles or `prefers-color-scheme`), dark output is **best effort** and cannot be guaranteed. Provide dark-ready HTML for the best results!
 
 ### Supported Input Types
 
@@ -161,8 +155,10 @@ Practical guidance:
 
 ---
 
-## What's New in v1.0.0
+## What's New in v1.0.1 / V1.0.0
 
+- Fixed an issue where fractional pixel rounding in Chromium caused a blank second page to render for certain documents.
+- Fixed `pypdf` not installing automatically with `pip install seamless-pdf`.
 - Added **Page Width Control** via the `--width` CLI argument or API parameter to bound extremely wide documents.
 - Added **Custom Margins / Padding** (`--margin-top`, `--margin-right`, `--margin-bottom`, `--margin-left`) to let text breathe.  
 - Added **PDF Outlines (Bookmarks)**. Seamless PDF now automatically parses headers (`<h1>` to `<h6>`) and injects them hierarchically into the final continuous PDF!
