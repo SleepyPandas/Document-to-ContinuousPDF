@@ -197,3 +197,25 @@ def test_cli_invalid_theme_choice(capsys):
     assert excinfo.value.code == 2
     captured = capsys.readouterr()
     assert "invalid choice" in captured.err
+
+
+def test_cli_playwright_missing_browser_hint(tmp_path, capsys):
+    """Test that a missing Playwright browser error prints an install hint."""
+    input_file = tmp_path / "input.html"
+    input_file.touch()
+
+    test_args = ["program_name", str(input_file)]
+
+    with patch.object(sys, "argv", test_args):
+        # Mock convert to raise an exception containing "Executable doesn't exist"
+        with patch(
+            "seamless_pdf.cli.convert",
+            side_effect=Exception("Executable doesn't exist at /path/to/browser"),
+        ):
+            with pytest.raises(SystemExit):
+                main()
+
+            captured = capsys.readouterr()
+            assert "Playwright browsers are not installed" in captured.err
+            assert "python -m playwright install chromium" in captured.err
+            assert "Error: Executable doesn't exist" in captured.err

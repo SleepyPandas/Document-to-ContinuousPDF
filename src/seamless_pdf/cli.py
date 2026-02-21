@@ -77,6 +77,16 @@ def main():
         )
         print(f"Successfully converted '{args.input_file}' to '{args.output}'")
     except Exception as e:
+        error_msg = str(e)
+        if "Executable doesn't exist" in error_msg or "playwright install" in error_msg:
+            print(
+                "\nIt looks like Playwright browsers are not installed. "
+                "Please run the following command to install them:\n\n"
+                "    python -m playwright install chromium\n"
+                "    # or\n"
+                "    playwright install\n",
+                file=sys.stderr,
+            )
         # Surface errors on stderr and exit with a non-zero code.
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
