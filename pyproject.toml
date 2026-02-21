@@ -12,6 +12,17 @@ description = "Convert HTML, Markdown, and DOCX documents into continuous, singl
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
+keywords = ["pdf", "converter", "continuous", "single-page", "html", "markdown", "docx"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities",
+]
 dependencies = [
     "playwright >=1.40.0",
     "markdown >=3.10.1",
@@ -20,6 +31,10 @@ dependencies = [
     "mammoth >=1.6.0",
     "pypdf >=3.17.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/SleepyPandas/Document-to-ContinuousPDF"
+
 
 [project.scripts]
 seamless-pdf = "seamless_pdf.cli:main"
