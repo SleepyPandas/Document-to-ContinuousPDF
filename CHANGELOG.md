@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2026-02-20
+
+### Fixed
+- Added explicitly defined Trove classifiers to `pyproject.toml` so the correct MIT license badge correctly displays on the package's PyPI index page.
+
 ## [1.0.1] - 2026-02-20
 
 ### Fixed
