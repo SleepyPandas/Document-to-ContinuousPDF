@@ -16,7 +16,7 @@
 
 
 
-Standard PDF converters split your content across fixed-size pages. **Seamless PDF** renders the entire document onto a single continuous page perfectly sized to the content's width and height. Ideal for long-form reports, documentation snapshots, newsletters and any workflow where page breaks get in the way or you want to retain the original content viewing experience.
+Standard PDF converters split your content across fixed-size pages. **Seamless PDF** renders the entire document onto a single continuous page perfectly sized to the content's width and height. Ideal for long-form reports, documentation snapshots, newsletters and any workflow where page breaks get in the way or you want to retain the original content viewing experience i.e it retains original table of contents.
 
 ---
 
@@ -28,9 +28,11 @@ Standard PDF converters split your content across fixed-size pages. **Seamless P
 | **Multi-Format Input** | Supports `.html`, `.md`, `.markdown`, and `.docx` files |
 | **CLI & Python API** | Use from the terminal or integrate directly into your code |
 | **Markdown Rendering** | GitHub-flavored Markdown with syntax highlighting via Pygments |
-| **Theme Selection (v0.4.0)** | Render output with `light` or `dark` theme via API/CLI |
-| **Reliability Improvements (v0.4.0)** | Safer temp-file handling and stronger HTML render wait strategy |
-| **DOCX Diagnostics (v0.4.0)** | Mammoth conversion warnings/errors are surfaced clearly |
+| **Theme Selection** | Render output with `light` or `dark` theme via API/CLI |
+| **Page Width Control (v1.0.0)** | Option to enforce a maximum page width (e.g., `800px`) |
+| **Custom Margins (v1.0.0)** | Added `--margin-top`, `--margin-right`, `--margin-bottom`, and `--margin-left` arguments |
+| **PDF Outlines / Bookmarks (v1.0.0)** | Automatically extracts headers (`<h1>` to `<h6>`) and maps them into native PDF bookmarks |
+| **DOCX Diagnostics** | Mammoth conversion warnings/errors are surfaced clearly |
 
 
 ---
@@ -57,6 +59,9 @@ seamless-pdf input.html -o output.pdf
 seamless-pdf README.md -o README.pdf
 seamless-pdf report.docx -o report.pdf
 seamless-pdf README.md -o README-dark.pdf --theme dark
+
+# Width and Margin control
+seamless-pdf README.md -o README-custom.pdf --width 1000px --margin-top 50px --margin-bottom 50px
 ```
 
 ### Python API
@@ -67,7 +72,15 @@ from seamless_pdf import convert
 convert("input.html", "output.pdf")
 convert("README.md", "readme.pdf")
 convert("report.docx", "report.pdf")
-convert("README.md", "readme-dark.pdf", theme="dark")
+
+# Theming, width, and margin overrides
+convert(
+    "README.md", 
+    "readme-custom.pdf", 
+    theme="dark", 
+    width="1000px", 
+    margin_top="50px"
+)
 ```
 
 ---
@@ -97,6 +110,9 @@ seamless-pdf docs/notes.txt -o notes.pdf --input-type markdown
 
 # Dark theme rendering
 seamless-pdf docs/notes.md -o notes-dark.pdf --theme dark
+
+# Custom page width and margins
+seamless-pdf docs/notes.md -o notes.pdf --width 800px --margin-left 20px --margin-right 20px
 ```
 
 ### NOTES on DARKMODE FLAG
@@ -131,6 +147,7 @@ Practical guidance:
 | Pygments | >= 2.17.0 |
 | pymdown-extensions | >= 10.0 |
 | mammoth | >= 1.6.0 |
+| pypdf | >= 3.17.0 |
 
 ---
 
@@ -141,13 +158,12 @@ Practical guidance:
 
 ---
 
-## What's New in v0.4.0
+## What's New in v1.0.0
 
-- Added optional dark-mode rendering through `theme="dark"` (API) and `--theme dark` (CLI).
-- Replaced hardcoded temporary intermediate HTML filenames with per-run temp files and cleanup for safer concurrent conversions.
-- Hardened Playwright page-settle behavior before document measurement/PDF export to reduce race-condition failures.
-- DOCX conversion now surfaces Mammoth diagnostics (warnings and errors) instead of silently ignoring conversion messages.
-- Added developer extras and coverage config so editable development installs are documented and reproducible.
+- Added **Page Width Control** via the `--width` CLI argument or API parameter to bound extremely wide documents.
+- Added **Custom Margins / Padding** (`--margin-top`, `--margin-right`, `--margin-bottom`, `--margin-left`) to let text breathe.  
+- Added **PDF Outlines (Bookmarks)**. Seamless PDF now automatically parses headers (`<h1>` to `<h6>`) and injects them hierarchically into the final continuous PDF!
+- Hardened unit tests, stabilized edge cases, and expanded CLI/API configuration consistency.
 
 ---
 

@@ -7,7 +7,10 @@ from unittest.mock import patch
 
 import pytest
 
-from seamless_pdf.markdown_converter import convert_markdown_to_html, convert_markdown_to_pdf
+from seamless_pdf.markdown_converter import (
+    convert_markdown_to_html,
+    convert_markdown_to_pdf,
+)
 from seamless_pdf.utils import get_css_style
 
 
@@ -33,7 +36,14 @@ def test_convert_markdown_to_pdf_calls_html_pipeline(tmp_path):
     temp_html_path = mock_markdown_to_html.call_args.args[1]
     assert temp_html_path.endswith(".html")
     mock_html_to_pdf.assert_called_once_with(
-        temp_html_path, str(output_path), theme="light"
+        temp_html_path,
+        str(output_path),
+        theme="light",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
     assert not Path(temp_html_path).exists()
 
@@ -93,7 +103,9 @@ def test_convert_markdown_to_pdf_passes_dark_theme_to_pipeline(tmp_path):
     with patch(
         "seamless_pdf.markdown_converter.convert_markdown_to_html"
     ) as mock_markdown_to_html:
-        with patch("seamless_pdf.markdown_converter.convert_html_to_pdf") as mock_html_to_pdf:
+        with patch(
+            "seamless_pdf.markdown_converter.convert_html_to_pdf"
+        ) as mock_html_to_pdf:
             convert_markdown_to_pdf(str(markdown_path), str(output_path), theme="dark")
 
     temp_html_path = mock_markdown_to_html.call_args.args[1]
@@ -101,7 +113,14 @@ def test_convert_markdown_to_pdf_passes_dark_theme_to_pipeline(tmp_path):
         str(markdown_path), temp_html_path, theme="dark"
     )
     mock_html_to_pdf.assert_called_once_with(
-        temp_html_path, str(output_path), theme="dark"
+        temp_html_path,
+        str(output_path),
+        theme="dark",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 

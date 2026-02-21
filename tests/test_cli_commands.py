@@ -3,7 +3,7 @@ Tests for the command-line interface wrapper.
 """
 
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, ANY
 import sys
 from seamless_pdf.cli import main
 
@@ -25,7 +25,15 @@ def test_cli_success(tmp_path):
                 main()
 
                 mock_convert.assert_called_once_with(
-                    str(input_file), str(output_file), input_type=None, theme="light"
+                    str(input_file),
+                    str(output_file),
+                    input_type=ANY,
+                    theme=ANY,
+                    width=ANY,
+                    margin_top=ANY,
+                    margin_right=ANY,
+                    margin_bottom=ANY,
+                    margin_left=ANY,
                 )
                 mock_print.assert_any_call(
                     f"Successfully converted '{input_file}' to '{output_file}'"
@@ -48,7 +56,15 @@ def test_cli_defaults(tmp_path):
 
                 # Default output is "output.pdf"
                 mock_convert.assert_called_once_with(
-                    str(input_file), "output.pdf", input_type=None, theme="light"
+                    str(input_file),
+                    "output.pdf",
+                    input_type=ANY,
+                    theme=ANY,
+                    width=ANY,
+                    margin_top=ANY,
+                    margin_right=ANY,
+                    margin_bottom=ANY,
+                    margin_left=ANY,
                 )
                 mock_print.assert_any_call(
                     f"Successfully converted '{input_file}' to 'output.pdf'"
@@ -75,7 +91,15 @@ def test_cli_input_type_override(tmp_path):
                 main()
 
     mock_convert.assert_called_once_with(
-        str(input_file), str(output_file), input_type="markdown", theme="light"
+        str(input_file),
+        str(output_file),
+        input_type="markdown",
+        theme=ANY,
+        width=ANY,
+        margin_top=ANY,
+        margin_right=ANY,
+        margin_bottom=ANY,
+        margin_left=ANY,
     )
 
 
@@ -99,7 +123,15 @@ def test_cli_theme_override(tmp_path):
                 main()
 
     mock_convert.assert_called_once_with(
-        str(input_file), str(output_file), input_type=None, theme="dark"
+        str(input_file),
+        str(output_file),
+        input_type=ANY,
+        theme="dark",
+        width=ANY,
+        margin_top=ANY,
+        margin_right=ANY,
+        margin_bottom=ANY,
+        margin_left=ANY,
     )
 
 

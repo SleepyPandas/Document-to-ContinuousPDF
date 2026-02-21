@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-02-20
+
+### Added
+- **Page Width Control** framework enabling users to constrain extremely wide continuous PDFs via `--width`.
+- **Custom Margins** for refined padding on output documents via `--margin-top`, `--margin-right`, `--margin-bottom`, and `--margin-left`.
+- **PDF Outlines (Bookmarks)** which automatically evaluate output headings (`<h1>` to `<h6>`) and maps them hierarchically into a native PDF index outline for easy navigation using `pypdf`.
+
+### Changed
+- Added `pypdf` as a project dependency.
+- Updated `README.md` and tests to accommodate the updated API and CLI interfaces alongside their new test mocking structures.
+
 ## [0.4.0] - 2026-02-13
 
 ### Added

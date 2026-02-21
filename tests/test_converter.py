@@ -68,9 +68,9 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     mock_browser = mock_context.chromium.launch.return_value
     mock_page = mock_browser.new_page.return_value
 
-    # We need to simulate the page evaluating scroll height/width
-    # The order of calls in your code: 1. scrollHeight, 2. scrollWidth
-    mock_page.evaluate.side_effect = ["1000", "800"]
+    # We need to simulate the page evaluating scroll height/width, and headings.
+    # The order of calls in your code: 1. scrollHeight, 2. scrollWidth, 3. headings
+    mock_page.evaluate.side_effect = ["1000", "800", []]
 
     # Create a dummy input file
     input_file = tmp_path / "test.html"
@@ -85,14 +85,19 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     mock_page.goto.assert_called_once()
     assert mock_page.goto.call_args.kwargs["wait_until"] == "domcontentloaded"
     assert mock_page.goto.call_args.kwargs["timeout"] == 30000
-    mock_page.emulate_media.assert_called_once_with(media="screen", color_scheme="light")
+    mock_page.emulate_media.assert_called_once_with(
+        media="screen", color_scheme="light"
+    )
     mock_page.wait_for_load_state.assert_any_call("domcontentloaded", timeout=10000)
     mock_page.wait_for_load_state.assert_any_call("load", timeout=10000)
     mock_page.wait_for_function.assert_called_once()
 
     # Verify PDF generation args
     mock_page.pdf.assert_called_with(
-        path=str(output_file), width="800px", height="1000px", print_background=True
+        path=str(output_file),
+        width="800px",
+        height="1000px",
+        print_background=True,
     )
 
     # Verify cleanup
@@ -111,7 +116,14 @@ def test_convert_uses_input_type_override_without_detection(tmp_path):
 
     mock_detect.assert_not_called()
     mock_markdown_converter.assert_called_once_with(
-        "document.unknown", str(output_file), theme="light"
+        "document.unknown",
+        str(output_file),
+        theme="light",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 
@@ -123,7 +135,14 @@ def test_convert_passes_theme_to_selected_converter(tmp_path):
         convert("document.docx", str(output_file), theme="dark")
 
     mock_docx_converter.assert_called_once_with(
-        "document.docx", str(output_file), theme="dark"
+        "document.docx",
+        str(output_file),
+        theme="dark",
+        width=None,
+        margin_top=None,
+        margin_right=None,
+        margin_bottom=None,
+        margin_left=None,
     )
 
 

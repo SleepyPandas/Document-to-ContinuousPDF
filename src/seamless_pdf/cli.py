@@ -29,6 +29,31 @@ def main():
         help="Optional input type override (html, markdown, or docx).",
     )
     parser.add_argument(
+        "--width",
+        default=None,
+        help="Optional page width for the generated PDF (e.g. '800px', '210mm').",
+    )
+    parser.add_argument(
+        "--margin-top",
+        default=None,
+        help="Optional top margin (e.g. '20px', '1cm').",
+    )
+    parser.add_argument(
+        "--margin-right",
+        default=None,
+        help="Optional right margin (e.g. '20px', '1cm').",
+    )
+    parser.add_argument(
+        "--margin-bottom",
+        default=None,
+        help="Optional bottom margin (e.g. '20px', '1cm').",
+    )
+    parser.add_argument(
+        "--margin-left",
+        default=None,
+        help="Optional left margin (e.g. '20px', '1cm').",
+    )
+    parser.add_argument(
         "--theme",
         choices=["light", "dark"],
         default="light",
@@ -40,7 +65,15 @@ def main():
     try:
         # Run the conversion and report success.
         convert(
-            args.input_file, args.output, input_type=args.input_type, theme=args.theme
+            args.input_file,
+            args.output,
+            input_type=args.input_type,
+            theme=args.theme,
+            width=args.width,
+            margin_top=args.margin_top,
+            margin_right=args.margin_right,
+            margin_bottom=args.margin_bottom,
+            margin_left=args.margin_left,
         )
         print(f"Successfully converted '{args.input_file}' to '{args.output}'")
     except Exception as e:
