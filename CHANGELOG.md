@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Expanded PyPI project metadata in `pyproject.toml` including classifiers, keywords, and project URLs to improve sidebar display and discoverability.
 
+### Fixed
+- Removed custom color to fix License Badge
+
 ## [1.0.2] - 2026-02-20
 
 ### Fixed
