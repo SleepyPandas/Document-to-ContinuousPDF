@@ -160,7 +160,62 @@ def convert_html_to_pdf(
         if margins:
             pdf_options["margin"] = margins
 
+        # Extract headings for bookmarks
+        headings = page.evaluate(
+            """
+            () => {
+                const elements = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+                return elements.map(el => {
+                    const rect = el.getBoundingClientRect();
+                    return {
+                        text: el.innerText || el.textContent,
+                        level: parseInt(el.tagName.substring(1)),
+                        y: rect.top + window.scrollY
+                    };
+                });
+            }
+            """
+        )
+
         page.pdf(**pdf_options)
+
+        # Apply PDF bookmarks if headings are present
+        if headings:
+            from pypdf import PdfReader, PdfWriter
+            from pypdf.generic import Fit
+
+            reader = PdfReader(str(output_path))
+            writer = PdfWriter()
+            writer.append_pages_from_reader(reader)
+
+            page_height_pt = float(reader.pages[0].mediabox.height)
+            parents = [None] * 7
+
+            for h in headings:
+                level = h["level"]
+                # Convert pixel Y to PDF Point Y (bottom-up space)
+                y_pt = h["y"] * 0.75
+                pdf_y = page_height_pt - y_pt
+
+                parent = None
+                for i in range(level - 1, 0, -1):
+                    if parents[i] is not None:
+                        parent = parents[i]
+                        break
+
+                outline_item = writer.add_outline_item(
+                    title=h["text"],
+                    page_number=0,
+                    parent=parent,
+                    fit=Fit.xyz(left=0, top=pdf_y, zoom=0),
+                )
+
+                parents[level] = outline_item
+                for i in range(level + 1, 7):
+                    parents[i] = None
+
+            with open(str(output_path), "wb") as f:
+                writer.write(f)
 
         # Always close the browser to release resources.
         browser.close()

@@ -68,9 +68,9 @@ def test_convert_calls_playwright_correctly(mock_playwright, tmp_path):
     mock_browser = mock_context.chromium.launch.return_value
     mock_page = mock_browser.new_page.return_value
 
-    # We need to simulate the page evaluating scroll height/width
-    # The order of calls in your code: 1. scrollHeight, 2. scrollWidth
-    mock_page.evaluate.side_effect = ["1000", "800"]
+    # We need to simulate the page evaluating scroll height/width, and headings.
+    # The order of calls in your code: 1. scrollHeight, 2. scrollWidth, 3. headings
+    mock_page.evaluate.side_effect = ["1000", "800", []]
 
     # Create a dummy input file
     input_file = tmp_path / "test.html"
