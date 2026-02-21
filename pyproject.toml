@@ -11,6 +11,11 @@ authors = [
 description = "Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs."
 readme = "README.md"
 license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
 requires-python = ">=3.10"
 dependencies = [
     "playwright >=1.40.0",
