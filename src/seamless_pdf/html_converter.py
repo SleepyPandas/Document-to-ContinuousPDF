@@ -91,6 +91,9 @@ def convert_html_to_pdf(
         _wait_for_page_to_settle(page)
 
         # Compute the full document size to avoid page breaks.
+        # We use Math.ceil here because if the document height is 2345.6px,
+        # rounding it down to 2345px will cause the extra 0.6px to spill onto a second page.
+        # Adding 1 extra pixel buffer is a common practice for headless PDF rendering.
         page_height = (
             str(
                 int(
@@ -99,14 +102,14 @@ def convert_html_to_pdf(
                         () => {
                             const body = document.body;
                             const doc = document.documentElement;
-                            return Math.max(
+                            return Math.ceil(Math.max(
                                 body ? body.scrollHeight : 0,
                                 body ? body.offsetHeight : 0,
                                 doc ? doc.clientHeight : 0,
                                 doc ? doc.scrollHeight : 0,
                                 doc ? doc.offsetHeight : 0,
                                 1
-                            );
+                            )) + 1;
                         }
                         """
                     )
@@ -122,14 +125,14 @@ def convert_html_to_pdf(
                         () => {
                             const body = document.body;
                             const doc = document.documentElement;
-                            return Math.max(
+                            return Math.ceil(Math.max(
                                 body ? body.scrollWidth : 0,
                                 body ? body.offsetWidth : 0,
                                 doc ? doc.clientWidth : 0,
                                 doc ? doc.scrollWidth : 0,
                                 doc ? doc.offsetWidth : 0,
                                 1
-                            );
+                            ));
                         }
                         """
                     )

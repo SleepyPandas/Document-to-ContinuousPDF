@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2026-02-20
+
+### Fixed
+- Fixed an issue where fractional pixel rounding in Chromium caused a blank second page to render for certain documents.
+- Fixed `pypdf` not installing automatically with `pip install seamless-pdf`.
+
 ## [1.0.0] - 2026-02-20
 
 ### Added
