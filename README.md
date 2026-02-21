@@ -10,7 +10,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/SleepyPandas/Document-to-ContinuousPDF/test.yml?style=flat&label=tests)](https://github.com/SleepyPandas/Document-to-ContinuousPDF/actions)
 [![Powered by Playwright](https://img.shields.io/badge/powered%20by-Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)](https://playwright.dev/)
-[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat&color=#03fc0b)](LICENSE)
+[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat)](LICENSE)
 
 </div>
 
