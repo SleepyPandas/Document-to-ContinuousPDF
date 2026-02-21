@@ -10,7 +10,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/SleepyPandas/Document-to-ContinuousPDF/test.yml?style=flat&label=tests)](https://github.com/SleepyPandas/Document-to-ContinuousPDF/actions)
 [![Powered by Playwright](https://img.shields.io/badge/powered%20by-Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)](https://playwright.dev/)
-[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat&color=#03fc0b)](LICENSE)
+[![License](https://img.shields.io/github/license/SleepyPandas/Document-to-ContinuousPDF?style=flat)](LICENSE)
 
 </div>
 
@@ -155,7 +155,8 @@ seamless-pdf docs/notes.md -o notes.pdf --width 800px --margin-left 20px --margi
 
 ---
 
-## What's New in v1.0.1 / V1.0.0
+
+## What's New in V1.0.1 / V1.0.0 
 
 - Fixed an issue where fractional pixel rounding in Chromium caused a blank second page to render for certain documents.
 - Fixed `pypdf` not installing automatically with `pip install seamless-pdf`.
@@ -163,6 +164,8 @@ seamless-pdf docs/notes.md -o notes.pdf --width 800px --margin-left 20px --margi
 - Added **Custom Margins / Padding** (`--margin-top`, `--margin-right`, `--margin-bottom`, `--margin-left`) to let text breathe.  
 - Added **PDF Outlines (Bookmarks)**. Seamless PDF now automatically parses headers (`<h1>` to `<h6>`) and injects them hierarchically into the final continuous PDF!
 - Hardened unit tests, stabilized edge cases, and expanded CLI/API configuration consistency.
+
+*see [changelog.md](CHANGELOG.md) for more*
 
 ---
 
