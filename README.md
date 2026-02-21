@@ -45,7 +45,8 @@ python -m playwright install chromium
 playwright install
 ```
 
-> **Note:** Playwright uses a headless Chromium browser under the hood to render documents. The second command downloads the browser binary. For first time installs of playwright or updates you may need download the new browsers with `playwright install`.
+> [!IMPORTANT]
+> Playwright uses a headless Chromium browser under the hood to render documents. The standard `pip install` does **not** download the browser binary automatically. For first-time installs or updates, you **must** download the Chromium browser by running `python -m playwright install chromium` followed by `playwright install`.
 > 
 
 ---
