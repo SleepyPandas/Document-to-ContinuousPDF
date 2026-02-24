@@ -5,7 +5,7 @@
 **Convert HTML, Markdown, and DOCX documents into continuous, single-page PDFs -- no page breaks.**
 
 [![PyPI Version](https://img.shields.io/pypi/v/seamless-pdf?style=flat&color=7700b8)](https://pypi.org/project/seamless-pdf/)
-[![Downloads](https://static.pepy.tech/badge/seamless-pdf)](https://pepy.tech/project/seamless-pdf)
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/seamless-pdf?color=f08811)
 [![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-007ec6?style=flat)]()
 
 [![CI](https://img.shields.io/github/actions/workflow/status/SleepyPandas/Document-to-ContinuousPDF/test.yml?style=flat&label=tests)](https://github.com/SleepyPandas/Document-to-ContinuousPDF/actions)
